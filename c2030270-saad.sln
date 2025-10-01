@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "c2030270-saad", "c2030270-saad\c2030270-saad.csproj", "{C33C3186-CA24-4C79-99AA-F621F6F68ED0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "c2030270-saad.Tests", "c2030270-saad.Tests\c2030270-saad.Tests.csproj", "{D9E893D9-C2BB-4232-97F0-F6B718E6608D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C33C3186-CA24-4C79-99AA-F621F6F68ED0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C33C3186-CA24-4C79-99AA-F621F6F68ED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C33C3186-CA24-4C79-99AA-F621F6F68ED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C33C3186-CA24-4C79-99AA-F621F6F68ED0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9E893D9-C2BB-4232-97F0-F6B718E6608D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9E893D9-C2BB-4232-97F0-F6B718E6608D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9E893D9-C2BB-4232-97F0-F6B718E6608D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9E893D9-C2BB-4232-97F0-F6B718E6608D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
