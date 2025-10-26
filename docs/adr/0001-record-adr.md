@@ -14,7 +14,6 @@ We need to:
 - Justify why particular choices were made over alternatives
 - Provide context for anyone wishing to understand the codebase
 - Document the evolution of the system architecture
-- Meet university project requirements for architectural justification
 
 The project is a proof-of-concept that requires clear documentation of technical decisions and their rationales.
 
@@ -37,6 +36,10 @@ Each ADR will document:
 - The context and constraints
 - The consequences (both positive and negative)
 - Alternatives considered
+
+Considered Alternatives:
+- MADR
+- Y-Statement
 
 ## Consequences
 
