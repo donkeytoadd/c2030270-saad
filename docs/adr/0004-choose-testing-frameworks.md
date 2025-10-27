@@ -12,7 +12,7 @@ I will use **xUnit** as the primary testing framework with **Moq** for mocking d
 
 - **NUnit**: Mature framework but xUnit is more aligned with modern .NET development
 - **MSTest**: Microsoft's default but less flexible than xUnit
-- **Manual mocking**: Without Moq, would require extensive test setup code
+- **Manual mocking**: Without Moq, would require extensive test setup code that brings about a lot of complex overhead
 - **No AutoMocker**: Would result in more verbose test configuration
 
 ## Consequences
@@ -21,12 +21,10 @@ I will use **xUnit** as the primary testing framework with **Moq** for mocking d
 - xUnit is modern, extensible, and well-supported in the .NET system
 - Moq provides mocking capabilities for isolating units under test
 - AutoMocker reduces test setup boilerplate and simplifies dependency management
-- Excellent integration with IDEs (Visual Studio, Rider) and CI/CD pipelines
-- Strong community support and extensive documentation
+- Strong support and extensive documentation
 - Parallel test execution by default improves test performance
 
 ### Negative
-- Learning curve for developers unfamiliar with xUnit's attribute system
 - Additional dependencies to manage and update (Moq, AutoMocker)
 - Potential over-engineering for simple test scenarios
 - Requires discipline to maintain test quality and avoid test code duplication
