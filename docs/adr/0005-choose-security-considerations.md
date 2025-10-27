@@ -9,7 +9,7 @@ The application will be handling user data and as such requires security measure
 I intend to implement a multi-layered security approach consisting of:
 
 1. **JWT Authentication** for stateless user identification
-2. **Role-Based Access Control (RBAC)** for authorization
+2. **Role-Based Access Control (RBAC)** for authorisation
 3. **Tenant-level data isolation** using ID-based filtering
 4. **Field-level encryption** for sensitive data such as passwords
 5. **Minimal endpoint exposure** to reduce attack surface
@@ -20,7 +20,7 @@ I intend to implement a multi-layered security approach consisting of:
 - **Claim-based authorization only**: Less structured than RBAC for role management
 - **Database-level security only**: Would not provide application-level protection
 - **Full-database encryption**: Too much performance overhead versus field-level encryption
-- **Open all endpoints**: Significantly increases attack surface
+- **Open all endpoints**: Significantly increases potential attack surface
 
 ## Consequences
 
@@ -30,7 +30,7 @@ I intend to implement a multi-layered security approach consisting of:
 - **Fine-grained Control**: RBAC provides precise permission management per each user role
 - **Data Protection**: Tenant isolation and encryption prevent data leakage
 - **Reduced Attack Surface**: Minimal endpoint exposure limits potential vulnerabilities
-- **Compliance Ready**: Meets common security standards for data protection
+- **Compliance**: Meets common security standards for data protection
 
 ### Negative
 - **Implementation Complexity**: Multiple security components require careful implementation
