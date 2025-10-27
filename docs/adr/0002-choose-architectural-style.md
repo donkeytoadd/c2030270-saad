@@ -45,7 +45,7 @@ Project/
 Considered alternatives:
 
 - **Clean Architecture**: More complex with dependency inversion
-- **Microservices**: Overkill for a solo proof-of-concept
+- **Microservices**: Overkill for a solo proof-of-concept, as well as being harder to work with both a user interface and backend simultaneously
 
 ## Consequences
 
