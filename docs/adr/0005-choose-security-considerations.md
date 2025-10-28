@@ -1,5 +1,9 @@
 # 5. Security Implementation Strategy
 
+## Status
+
+Superseded by [6. Choose Authentication Method](0006-choose-authentication-method), [7. Choose Authorisation Method](0007-choose-authorisation-method.md), [8. Isolate Tenant Data](0008-isolate-tenant-data.md), [9. Encrypt Field Level Data](0009-encrypt-field-level-data.md), [10. Choose Level Of API Exposure](0010-choose-level-of-api-exposure.md)
+
 ## Context
 
 The application will be handling user data and as such requires security measures to protect against unauthorised access and data breaches. It will need comprehensive security that addresses authentication, authorisation, data isolation, and encryption while maintaining system performance and efficiency.
@@ -25,16 +29,16 @@ I intend to implement a multi-layered security approach consisting of:
 ## Consequences
 
 ### Positive
-- **In Depth Defense**: Multiple security layers protect against various attack angles
-- **Scalability**: JWT enables stateless authentication suitable for distributed systems and a growing number of users
-- **Fine-grained Control**: RBAC provides precise permission management per each user role
-- **Data Protection**: Tenant isolation and encryption prevent data leakage
-- **Reduced Attack Surface**: Minimal endpoint exposure limits potential vulnerabilities
-- **Compliance Ready**: Meets common security standards for data protection
+- Multiple security layers protect against various attack angles
+- JWT enables stateless authentication suitable for distributed systems and a growing number of users
+- RBAC provides precise permission management per each user role
+- Tenant isolation and encryption prevent data leakage
+- Minimal endpoint exposure limits potential vulnerabilities
+- Meets common security standards for data protection
 
 ### Negative
-- **Implementation Complexity**: Multiple security components require careful implementation
-- **Performance Overhead**: Encryption and authorisation checks impact response times for users
-- **Key Management**: Secure storage and rotation of JWT secrets and encryption keys
-- **Testing Burden**: Comprehensive security testing required for all layers
-- **Maintenance**: Ongoing security updates and vulnerability monitoring needed
+- Multiple security components require careful implementation
+- Encryption and authorisation checks impact response times for users
+- Secure storage and rotation of JWT secrets and encryption keys
+- Comprehensive testing required for all layers
+- Ongoing security updates and vulnerability monitoring needed

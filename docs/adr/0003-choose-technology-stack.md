@@ -59,19 +59,18 @@ I decided on all of these options for my technology stack as they are the same t
 
 ### Positive
 
-- **Placement Experience**: Worked with all of these technologies on placement, so learning curve is not as high 
-- **Clear Separation**: Angular frontend completely separate from .NET backend
-- **Industry Relevance**: Both stacks widely used in enterprise
-- **Rich Ecosystems**: Extensive libraries and packages available
-- **Good Documentation**: Excellent learning resources for both technologies
-- **Testing Support**: Built-in testing frameworks for both frontend and backend
-- **API-First**: Clean separation allows independent development
+- I have worked with all of these technologies on placement, so learning curve is not as high 
+- Angular frontend completely separate from .NET backend
+- Both stacks widely used in enterprise
+- Extensive libraries and packages available
+- Excellent learning resources and support available for both
+- Built-in testing frameworks for both frontend and backend
+- Clean separation allows independent development
 
 ### Negative
 
-- **Limited Learning**: By choosing not to explore other languages, I may potentially be limiting myself on the knowledge I can gain.
-- **Complexity**: Possibly two separate codebases to maintain
-- **Learning Curve**: Need to master both Angular and .NET systems
-- **Development Setup**: Need to run both Angular dev server and .NET API
-- **Deployment Complexity**: Two separate applications to deploy
-- **Type Duplication**: May need similar models in both frontend and backend
+- By choosing not to explore other languages, I may potentially be limiting myself on the knowledge I can gain.
+- Possibly two separate codebases to maintain
+- Need to run both Angular dev server and .NET API
+- Two separate applications to deploy
+- May need similar models in both frontend and backend
