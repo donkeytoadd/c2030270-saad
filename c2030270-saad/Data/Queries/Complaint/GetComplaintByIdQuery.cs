@@ -4,11 +4,11 @@ namespace c2030270_saad.Data.Queries.Complaint
     using Interfaces;
     using Microsoft.EntityFrameworkCore;
 
-    public class GetComplaintById : IGetComplaintById
+    public class GetComplaintByIdQuery : IGetComplaintByIdQuery
     {
         private readonly IDbContextFactory<ApplicationDbContext> contextFactory;
 
-        public GetComplaintById(IDbContextFactory<ApplicationDbContext> contextFactory)
+        public GetComplaintByIdQuery(IDbContextFactory<ApplicationDbContext> contextFactory)
         {
             this.contextFactory = contextFactory;
         }

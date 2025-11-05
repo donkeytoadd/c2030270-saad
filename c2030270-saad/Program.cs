@@ -1,8 +1,13 @@
-using c2030270_saad.Business.Helpers;
-using c2030270_saad.Business.Helpers.Interfaces;
+using c2030270_saad.Business.Creators.Complaint;
+using c2030270_saad.Business.Creators.Complaint.Interfaces;
+using c2030270_saad.Business.Getters.Complaint;
+using c2030270_saad.Business.Getters.Complaint.Interfaces;
 using c2030270_saad.Data;
+using c2030270_saad.Data.Queries;
 using c2030270_saad.Data.Queries.Complaint;
 using c2030270_saad.Data.Queries.Complaint.Interfaces;
+using c2030270_saad.Data.Queries.Consumer;
+using c2030270_saad.Data.Queries.Consumer.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -15,7 +20,11 @@ builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IComplaintGetter, ComplaintGetter>();
-builder.Services.AddScoped<IGetComplaintById, GetComplaintById>();
+builder.Services.AddScoped<IComplaintCreator, ComplaintCreator>();
+builder.Services.AddScoped<IGetComplaintByIdQuery, GetComplaintByIdQuery>();
+builder.Services.AddScoped<IGetAllComplaintsByConsumerIdQuery, GetAllComplaintsByConsumerIdQuery>();
+builder.Services.AddScoped<ICreateComplaintQuery, CreateComplaintQuery>();
+builder.Services.AddScoped<IGetConsumerByConsumerIdQuery, GetConsumerByConsumerIdQuery>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

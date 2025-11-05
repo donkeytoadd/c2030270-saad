@@ -21,7 +21,7 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.4" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Data\Resources\Requests\Complaint\" />
+      <Folder Include="Resources\Complaint\Response\" />
     </ItemGroup>
 
 </Project>

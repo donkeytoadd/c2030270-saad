@@ -1,0 +1,10 @@
+namespace c2030270_saad.Business.Creators.Complaint.Interfaces
+{
+    using Data.Entities;
+    using Resources.Complaint.Request;
+
+    public interface IComplaintCreator
+    {
+        Complaint? CreateComplaint(AddComplaintRequest createComplaint);
+    }
+}
