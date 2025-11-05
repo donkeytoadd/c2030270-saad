@@ -1,5 +1,7 @@
 namespace c2030270_saad.Controllers
 {
+    using Business.Helpers.Interfaces;
+    using Data.Entities;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController] 
@@ -7,19 +9,31 @@ namespace c2030270_saad.Controllers
     public class ComplaintController : ControllerBase 
     {
         private readonly ILogger<ComplaintController> _logger;
+        private readonly IComplaintGetter complaintGetter;
 
         public ComplaintController(
-            ILogger<ComplaintController> logger)
+            ILogger<ComplaintController> logger,
+            IComplaintGetter complaintGetter)
         {
             this._logger = logger;
+            this.complaintGetter = complaintGetter;
         }
 
-        [HttpPost("ComplaintTest")]
-        public async Task<IActionResult> ComplaintTest()
+        [HttpGet("GetComplaint")]
+        public async Task<ActionResult<Complaint>> GetComplaint(int complaintId)
         {
             try
             {
-                return Ok();
+                _logger.LogInformation("Getting complaint with ID: {ComplaintId}", complaintId);
+                var complaint = this.complaintGetter.GetComplaint(complaintId);
+                
+                if (complaint == null)
+                {
+                    _logger.LogWarning("Complaint with ID {ComplaintId} not found", complaintId);
+                    return BadRequest($"Complaint with ID {complaintId} not found");
+                }
+                
+                return Ok(complaint);
             }
             catch (Exception ex)
             {
@@ -27,7 +41,5 @@ namespace c2030270_saad.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
-
-        
     }
 }
