@@ -3,7 +3,6 @@ namespace c2030270_saad.Data.Queries.Complaint
     using Entities;
     using Interfaces;
     using Microsoft.EntityFrameworkCore;
-    using Resources.Complaint.Request;
 
     public class CreateComplaintQuery : ICreateComplaintQuery
     {
@@ -16,12 +15,19 @@ namespace c2030270_saad.Data.Queries.Complaint
         
         public Complaint Execute(Complaint complaint)
         {
-            using (var context = this.contextFactory.CreateDbContext())
+            try
             {
-                context.Complaint.Add(complaint);
-                context.SaveChanges();
+                using (var context = this.contextFactory.CreateDbContext())
+                {
+                    context.Complaint.Add(complaint);
+                    context.SaveChanges();
 
-                return complaint;
+                    return complaint;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
             }
         }
     }

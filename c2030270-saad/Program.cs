@@ -1,13 +1,21 @@
 using c2030270_saad.Business.Creators.Complaint;
 using c2030270_saad.Business.Creators.Complaint.Interfaces;
+using c2030270_saad.Business.Creators.Tenant;
+using c2030270_saad.Business.Creators.Tenant.Interfaces;
 using c2030270_saad.Business.Getters.Complaint;
 using c2030270_saad.Business.Getters.Complaint.Interfaces;
+using c2030270_saad.Business.Getters.Tenant;
+using c2030270_saad.Business.Getters.Tenant.Interfaces;
+using c2030270_saad.Business.Updaters.Complaint;
+using c2030270_saad.Business.Updaters.Complaint.Interfaces;
 using c2030270_saad.Data;
 using c2030270_saad.Data.Queries;
 using c2030270_saad.Data.Queries.Complaint;
 using c2030270_saad.Data.Queries.Complaint.Interfaces;
 using c2030270_saad.Data.Queries.Consumer;
 using c2030270_saad.Data.Queries.Consumer.Interfaces;
+using c2030270_saad.Data.Queries.Tenant;
+using c2030270_saad.Data.Queries.Tenant.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -21,10 +29,18 @@ builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IComplaintGetter, ComplaintGetter>();
 builder.Services.AddScoped<IComplaintCreator, ComplaintCreator>();
+builder.Services.AddScoped<IComplaintStatusUpdater, ComplaintStatusUpdater>();
+builder.Services.AddScoped<ITenantCreator, TenantCreator>();
+builder.Services.AddScoped<ITenantGetter, TenantGetter>();
 builder.Services.AddScoped<IGetComplaintByIdQuery, GetComplaintByIdQuery>();
 builder.Services.AddScoped<IGetAllComplaintsByConsumerIdQuery, GetAllComplaintsByConsumerIdQuery>();
+builder.Services.AddScoped<IGetAllComplaintsByTenantIdQuery, GetAllComplaintsByTenantIdQuery>();
 builder.Services.AddScoped<ICreateComplaintQuery, CreateComplaintQuery>();
 builder.Services.AddScoped<IGetConsumerByConsumerIdQuery, GetConsumerByConsumerIdQuery>();
+builder.Services.AddScoped<IUpdateComplaintStatusQuery, UpdateComplaintStatusQuery>();
+builder.Services.AddScoped<ICreateTenantQuery, CreateTenantQuery>();
+builder.Services.AddScoped<IGetAllTenantsQuery, GetAllTenantsQuery>();
+builder.Services.AddScoped<IGetTenantByTenantIdQuery, GetTenantByTenantIdQuery>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

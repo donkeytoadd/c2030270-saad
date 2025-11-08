@@ -6,5 +6,6 @@ namespace c2030270_saad.Business.Getters.Complaint.Interfaces
     {
         Complaint? GetComplaint(int complaintId);
         List<Complaint> GetAllComplaints(int consumerId);
+        List<Complaint> GetAllComplaintsByTenantId(int tenantId);
     }
 }

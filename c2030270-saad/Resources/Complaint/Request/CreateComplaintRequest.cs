@@ -1,7 +1,7 @@
 namespace c2030270_saad.Resources.Complaint.Request
 {
 
-    public class AddComplaintRequest
+    public class CreateComplaintRequest
     {
         public int ConsumerId { get; set; }
         public string Priority { get; set; }

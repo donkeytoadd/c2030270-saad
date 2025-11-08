@@ -6,28 +6,37 @@ namespace c2030270_saad.Business.Getters.Complaint
 
     public class ComplaintGetter : IComplaintGetter
     {
-        private readonly IGetComplaintByIdQuery _getComplaintByIdQuery;
-        private readonly IGetAllComplaintsByConsumerIdQuery _getAllComplaintsByConsumerIdQuery;
+        private readonly IGetComplaintByIdQuery getComplaintByIdQuery;
+        private readonly IGetAllComplaintsByConsumerIdQuery getAllComplaintsByConsumerIdQuery;
+        private readonly IGetAllComplaintsByTenantIdQuery getAllComplaintsByTenantIdQuery;
         
         public ComplaintGetter(
             IGetComplaintByIdQuery getComplaintByIdQuery,
-            IGetAllComplaintsByConsumerIdQuery getAllComplaintsByConsumerIdQuery)
+            IGetAllComplaintsByConsumerIdQuery getAllComplaintsByConsumerIdQuery,
+            IGetAllComplaintsByTenantIdQuery  getAllComplaintsByTenantIdQuery)
         {
-            this._getComplaintByIdQuery = getComplaintByIdQuery;
-            this._getAllComplaintsByConsumerIdQuery = getAllComplaintsByConsumerIdQuery;
+            this.getComplaintByIdQuery = getComplaintByIdQuery;
+            this.getAllComplaintsByConsumerIdQuery = getAllComplaintsByConsumerIdQuery;
+            this.getAllComplaintsByTenantIdQuery =  getAllComplaintsByTenantIdQuery;
         }
         
         public Complaint? GetComplaint(int complaintId)
         {
-            var complaint = this._getComplaintByIdQuery.Execute(complaintId);
+            var complaint = this.getComplaintByIdQuery.Execute(complaintId);
 
             return complaint ?? new Complaint();
         }
 
         public List<Complaint> GetAllComplaints(int consumerId)
         {
-            var complaintList = this._getAllComplaintsByConsumerIdQuery.Execute(consumerId);
+            var complaintList = this.getAllComplaintsByConsumerIdQuery.Execute(consumerId);
             return complaintList.Count != 0 ? complaintList : new List<Complaint>();
+        }
+
+        public List<Complaint> GetAllComplaintsByTenantId(int tenantId)
+        {
+            var complaintList = this.getAllComplaintsByTenantIdQuery.Execute(tenantId);
+            return complaintList.Count != 0 ? complaintList : new List<Complaint>(); 
         }
     }
 }
