@@ -3,6 +3,7 @@ namespace c2030270_saad.Controllers
     using Business.Creators.Complaint.Interfaces;
     using Business.Getters.Complaint.Interfaces;
     using Data.Entities;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Resources.Complaint.Request;
 
@@ -29,12 +30,12 @@ namespace c2030270_saad.Controllers
         {
             try
             {
-                _logger.LogInformation("Getting complaint with ID {ComplaintId}", complaintId);
+                _logger.LogInformation($"Getting complaint with ID {complaintId}");
                 var complaint = this.complaintGetter.GetComplaint(complaintId);
                 
                 if (complaint == null)
                 {
-                    _logger.LogWarning("Complaint with ID {ComplaintId} not found", complaintId);
+                    _logger.LogWarning($"Complaint with ID {complaintId} not found");
                     return BadRequest($"Complaint with ID {complaintId} not found");
                 }
                 
@@ -42,34 +43,52 @@ namespace c2030270_saad.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving complaint with ID {ComplaintId}", complaintId);
-                return StatusCode(500, "Internal server error");
+                _logger.LogError(ex, $"Error retrieving complaint with ID {complaintId}");
+                return BadRequest($"Error retrieving complaint with ID {complaintId}");
             }
         }
 
         [HttpGet("GetAllComplaints")]
+        [Authorize(Roles = "Consumer, HelpDeskAgent")]
         public async Task<ActionResult<List<Complaint>>> GetAllComplaints(int consumerId)
         {
             try
             {
-                _logger.LogInformation("Getting all complaints for ConsumerId {ConsumerId}", consumerId);
+                _logger.LogInformation($"Getting all complaints for ConsumerId {consumerId}");
     
                 var complaintList = this.complaintGetter.GetAllComplaints(consumerId);
                 return Ok(complaintList);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving complaints from account with ConsumerId {consumerId}", consumerId);
+                _logger.LogError(ex, $"Error retrieving complaints from account with ConsumerId {consumerId}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("GetAllTenantsComplaints")]
+        public async Task<ActionResult<List<Complaint>>> GetAllTenantsComplaints(int tenantId)
+        {
+            try
+            {
+                _logger.LogInformation($"Getting all complaints for tenant with tenantId {tenantId}");
+    
+                var complaintList = this.complaintGetter.GetAllComplaintsByTenantId(tenantId);
+                return Ok(complaintList);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error retrieving complaints for tenant with tenantId {tenantId}");
                 return StatusCode(500, "Internal server error");
             }
         }
 
         [HttpPost("AddComplaint")]
-        public async Task<ActionResult> AddComplaint([FromBody] AddComplaintRequest complaintRequest)
+        public async Task<ActionResult> AddComplaint([FromBody] CreateComplaintRequest complaintRequest)
         {
             try
             {
-                _logger.LogInformation("Creating new complaint for ConsumerId: {ConsumerId}", complaintRequest.ConsumerId);
+                _logger.LogInformation($"Creating new complaint for ConsumerId: {complaintRequest.ConsumerId}");
 
                 var complaint = this.complaintCreator.CreateComplaint(complaintRequest);
 
@@ -77,7 +96,7 @@ namespace c2030270_saad.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error creating complaint for ConsumerId {ConsumerId}", complaintRequest.ConsumerId);
+                _logger.LogError(ex, $"Error creating complaint for ConsumerId {complaintRequest.ConsumerId}");
                 return StatusCode(500, "Internal server error");
             }
         }

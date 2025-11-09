@@ -5,6 +5,6 @@ namespace c2030270_saad.Business.Creators.Complaint.Interfaces
 
     public interface IComplaintCreator
     {
-        Complaint? CreateComplaint(AddComplaintRequest createComplaint);
+        Complaint? CreateComplaint(CreateComplaintRequest createComplaint);
     }
 }

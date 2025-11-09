@@ -19,7 +19,7 @@ namespace c2030270_saad.Business.Creators.Complaint
             this.getConsumerByConsumerIdQuery = getConsumerByConsumerIdQuery;
         }
         
-        public Complaint? CreateComplaint(AddComplaintRequest complaintRequest)
+        public Complaint? CreateComplaint(CreateComplaintRequest complaintRequest)
         {
             var consumer = this.getConsumerByConsumerIdQuery.Execute(complaintRequest.ConsumerId);
             
