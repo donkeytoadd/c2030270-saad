@@ -4,6 +4,7 @@ namespace c2030270_saad.Data.Entities
     {
         public int StaffId { get; set; }
         public int RoleId { get; set; }
+        public int TenantId { get; set; }
         public string FName { get; set; }
         public string LName { get; set; }
         public string Email { get; set; }
