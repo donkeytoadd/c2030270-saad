@@ -6,12 +6,12 @@ namespace c2030270_saad.Controllers
     [Route("api/[controller]/")]
     public class AuthController : ControllerBase 
     {
-        private readonly ILogger<AuthController> _logger;
+        private readonly ILogger<AuthController> logger;
 
         public AuthController(
             ILogger<AuthController> logger)
         {
-            this._logger = logger;
+            this.logger = logger;
         }
 
         [HttpPost("AuthTest")]
@@ -23,7 +23,7 @@ namespace c2030270_saad.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error");
+                logger.LogError(ex, "Error");
                 return StatusCode(500, "Internal server error");
             }
         }

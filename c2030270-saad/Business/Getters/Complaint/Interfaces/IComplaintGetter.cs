@@ -5,7 +5,7 @@ namespace c2030270_saad.Business.Getters.Complaint.Interfaces
     public interface IComplaintGetter
     {
         Complaint? GetComplaint(int complaintId);
-        List<Complaint> GetAllComplaints(int consumerId);
-        List<Complaint> GetAllComplaintsByTenantId(int tenantId);
+        List<Complaint> GetComplaintsByConsumerId(int consumerId);
+        List<Complaint> GetComplaintsByTenantId(int tenantId);
     }
 }

@@ -4,20 +4,20 @@ namespace c2030270_saad.Data.Queries.Complaint
     using Interfaces;
     using Microsoft.EntityFrameworkCore;
 
-    public class GetAllComplaintsByConsumerIdQuery : IGetAllComplaintsByConsumerIdQuery
+    public class GetComplaintsByTenantIdQuery : IGetAllComplaintsByTenantIdQuery
     {
         private readonly IDbContextFactory<ApplicationDbContext> contextFactory;
 
-        public GetAllComplaintsByConsumerIdQuery(IDbContextFactory<ApplicationDbContext> contextFactory)
+        public GetComplaintsByTenantIdQuery(IDbContextFactory<ApplicationDbContext> contextFactory)
         {
             this.contextFactory = contextFactory;
         }
         
-        public List<Complaint> Execute(int consumerId)
+        public List<Complaint> Execute(int tenantId)
         {
             using (var context = this.contextFactory.CreateDbContext())
             {
-                return context.Complaint.Where(x=>x.ConsumerId == consumerId).ToList();             
+                return context.Complaint.Where(x=>x.TenantId == tenantId).ToList();             
             }
         }
     }

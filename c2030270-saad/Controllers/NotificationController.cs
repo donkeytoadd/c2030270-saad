@@ -6,12 +6,12 @@ namespace c2030270_saad.Controllers
     [Route("api/[controller]/")]
     public class NotificationController : ControllerBase 
     {
-        private readonly ILogger<NotificationController> _logger;
+        private readonly ILogger<NotificationController> logger;
 
         public NotificationController(
             ILogger<NotificationController> logger)
         {
-            this._logger = logger;
+            this.logger = logger;
         }
 
         [HttpPost("NotificationTest")]
@@ -23,7 +23,7 @@ namespace c2030270_saad.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error");
+                logger.LogError(ex, "Error");
                 return StatusCode(500, "Internal server error");
             }
         }

@@ -8,14 +8,14 @@ namespace c2030270_saad.Controllers
     [Route("api/[controller]/")]
     public class TenantController : ControllerBase 
     {
-        private readonly ILogger<TenantController> _logger;
+        private readonly ILogger<TenantController> logger;
         private readonly ITenantGetter tenantGetter;
 
         public TenantController(
             ILogger<TenantController> logger,
             ITenantGetter tenantGetter)
         {
-            this._logger = logger;
+            this.logger = logger;
             this.tenantGetter = tenantGetter;
         }
 
@@ -28,7 +28,7 @@ namespace c2030270_saad.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error");
+                logger.LogError(ex, "Error");
                 return StatusCode(500, "Internal server error");
             }
         }
@@ -44,7 +44,7 @@ namespace c2030270_saad.Controllers
 
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error getting tenant list");
+                logger.LogError(ex, $"Error getting tenant list");
                 return StatusCode(500, "Internal server error");
             }
         }
@@ -59,7 +59,7 @@ namespace c2030270_saad.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error getting tenant with tenant id {tenantId}");
+                logger.LogError(ex, $"Error getting tenant with tenant id {tenantId}");
                 return StatusCode(500, "Internal server error");
             }
         }

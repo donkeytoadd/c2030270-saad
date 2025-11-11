@@ -8,13 +8,13 @@ namespace c2030270_saad.Controllers
     [Route("api/[controller]/")]
     public class HealthCheckController : ControllerBase 
     {
-        private readonly ILogger<HealthCheckController> _logger;
+        private readonly ILogger<HealthCheckController> logger;
         private readonly HealthCheckService _healthCheckService;
 
         public HealthCheckController(
             ILogger<HealthCheckController> logger, HealthCheckService healthCheckService)
         {
-            this._logger = logger;
+            this.logger = logger;
             _healthCheckService = healthCheckService;
         }
 
@@ -23,7 +23,7 @@ namespace c2030270_saad.Controllers
         {
             var report = await _healthCheckService.CheckHealthAsync();
 
-            _logger.LogInformation($"Performing health check: {report}");
+            logger.LogInformation($"Performing health check: {report}");
 
             return report.Status == HealthStatus.Healthy ? Ok(report) : StatusCode((int)HttpStatusCode.ServiceUnavailable, report);
         }
