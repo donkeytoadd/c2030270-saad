@@ -17,6 +17,7 @@ Certain data fields (e.g. personal information, credentials) require additional 
 Implement field-level encryption for sensitive data using Entity Framework Core value converters and secure key management.
 
 **Alternatives considered:**
+
 - Full database encryption: High performance impact
 - Application-level encryption only: Leaves data exposed in backups
 - No additional encryption: Insufficient for sensitive data
@@ -25,11 +26,13 @@ Implement field-level encryption for sensitive data using Entity Framework Core 
 
 ### Positive
 - Enhanced protection for sensitive data
+
 - In depth defence against database compromises
 - Selective encryption minimises performance impact on wider system
 - Compliance with data protection regulations
 
 ### Negative
+
 - Key management complexity
 - Performance overhead for encrypted operations
 - Complicates searching and indexing of encrypted fields

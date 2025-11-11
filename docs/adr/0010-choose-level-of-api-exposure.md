@@ -18,16 +18,19 @@ I should only be exposing endpoints that are actually required by the frontend i
 Implement a minimal endpoint exposure strategy where we consciously design and expose only necessary API endpoints, avoiding generic CRUD endpoints when not needed.
 
 **Alternatives considered:**
+
 - Expose all potential endpoints: Maximum flexibility but maximum attack surface
 
 ## Consequences
 
 ### Positive
+
 - Reduced attack surface
 - Clearer API design
 - Better alignment with frontend needs
 - Easier to secure
 
 ### Negative
+
 - More intentional API design required
 - Potential need for more endpoints later

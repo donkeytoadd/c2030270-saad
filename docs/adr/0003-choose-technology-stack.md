@@ -6,7 +6,7 @@ Accepted
 
 ## Context
 
-I need to select appropriate technologies for a proof-of-concept that:
+I need to select appropriate technologies for a project that:
 
 - Uses modern, industry-relevant technologies
 - Separates frontend and backend concerns clearly

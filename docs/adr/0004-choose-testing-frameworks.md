@@ -18,6 +18,7 @@ I will use **xUnit** as the primary testing framework with **Moq** for mocking d
 ## Consequences
 
 ### Positive
+
 - xUnit is modern, extensible, and well-supported in the .NET system
 - Moq provides mocking capabilities for isolating units under test
 - AutoMocker reduces test setup boilerplate and simplifies dependency management
@@ -25,6 +26,7 @@ I will use **xUnit** as the primary testing framework with **Moq** for mocking d
 - Parallel test execution by default improves test performance
 
 ### Negative
+
 - Additional dependencies to manage and update (Moq, AutoMocker)
 - Potential over-engineering for simple test scenarios
 - Requires discipline to maintain test quality and avoid test code duplication
