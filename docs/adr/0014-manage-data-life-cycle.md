@@ -31,7 +31,7 @@ A data strategy will be implemented to ensure all complaint, tenant and personal
 4. Deletion/Archival
  
 - After a defined retention period, inactive accounts or closed complaint data will be closed with this status change being reflected in the database
-- Request/response metadata will be retained for auditing purposes
+- Request/response metadata may be retained for auditing purposes
 - Relevant data will be deleted at user request
 
 ## Consequences

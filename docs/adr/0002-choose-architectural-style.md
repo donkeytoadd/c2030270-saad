@@ -8,7 +8,7 @@ Accepted
 
 ## Context
 
-As a solo developer building a proof-of-concept project, I need an architectural style that:
+When building this proof-of-concept project, I need an architectural style that:
 
 - Provides clear separation of concerns through distinct layers
 - Follows SOLID principles for maintainable code
@@ -21,17 +21,27 @@ As a solo developer building a proof-of-concept project, I need an architectural
   I will implement **Layered Architecture** with the following structure:
 
 ```
-Project/
-├── Controllers/ # Presentation Layer
-│ └── (API Controllers)
-├── Business/ # Business Logic Layer
-│ └── (Getters, Setters, Helpers etc)
-├── client-app/ # Presentation Layer
-│ └── (src)
-├── www-root/ # Presentation Layer
-│ └── (Images, Assests, Static Files)
-├── Data/ # Data Access Layer
-│ └── (Data Contexts, Entities, EF Queries, Resources, Enums etc)
+.
+└── CMS/
+    ├── UI Project/
+    │   ├── client-app/
+    │   │   └── src
+    │   └── www-root/
+    │       └── Images, Assests, Static Files
+    ├── Backend Project/
+    │   ├── Controllers/
+    │   │   └── API Controllers
+    │   ├── Business/
+    │   │   └── Getters, Setters, Helpers etc
+    │   └── Data/
+    │       └── Entities, Queries, Data Context
+    └── Backend Unit Tests Project/
+        ├── Controllers/
+        │   └── Controller Unit Tests
+        ├── Business/
+        │   └── Unit Tests for Business Logic
+        └── Data/
+            └── Query Unit Tests
 ```
 
 **SOLID Principles Application:**
