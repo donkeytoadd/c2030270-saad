@@ -33,8 +33,8 @@ builder.Services.AddScoped<IComplaintStatusUpdater, ComplaintStatusUpdater>();
 builder.Services.AddScoped<ITenantCreator, TenantCreator>();
 builder.Services.AddScoped<ITenantGetter, TenantGetter>();
 builder.Services.AddScoped<IGetComplaintByIdQuery, GetComplaintByIdQuery>();
-builder.Services.AddScoped<IGetAllComplaintsByConsumerIdQuery, GetAllComplaintsByConsumerIdQuery>();
-builder.Services.AddScoped<IGetAllComplaintsByTenantIdQuery, GetAllComplaintsByTenantIdQuery>();
+builder.Services.AddScoped<IGetAllComplaintsByConsumerIdQuery, GetComplaintsByConsumerIdQuery>();
+builder.Services.AddScoped<IGetAllComplaintsByTenantIdQuery, GetComplaintsByTenantIdQuery>();
 builder.Services.AddScoped<ICreateComplaintQuery, CreateComplaintQuery>();
 builder.Services.AddScoped<IGetConsumerByConsumerIdQuery, GetConsumerByConsumerIdQuery>();
 builder.Services.AddScoped<IUpdateComplaintStatusQuery, UpdateComplaintStatusQuery>();
@@ -53,8 +53,23 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+var myAllowSpecificOrigins = "myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: myAllowSpecificOrigins,
+        policyBuilder =>
+        {
+            policyBuilder.WithOrigins("http://localhost:4200")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        });
+});
 
 var app = builder.Build();
+
+app.UseCors(myAllowSpecificOrigins);
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>

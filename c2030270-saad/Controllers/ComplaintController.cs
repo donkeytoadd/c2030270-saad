@@ -49,7 +49,6 @@ namespace c2030270_saad.Controllers
         }
 
         [HttpGet("GetComplaintsByConsumerId")]
-        [Authorize(Roles = "Consumer, HelpDeskAgent")]
         public async Task<ActionResult<List<Complaint>>> GetComplaintsByConsumerId(int consumerId)
         {
             try

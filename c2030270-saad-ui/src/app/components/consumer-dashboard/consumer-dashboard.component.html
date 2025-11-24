@@ -1,0 +1,115 @@
+<div class="layout">
+  <aside class="sidebar" [class.closed]="!sidebarOpen">
+    <div class="sidebar-header">
+      @if (sidebarOpen) {
+        <h2 class="logo">ABC CMS</h2>
+      } @else {
+        <button class="hamburger" (click)="toggleSidebar()"><i class="fas fa-bars"></i></button>
+      }
+    </div>
+    <nav>
+      <a routerLink="/consumer-dashboard" routerLinkActive="active">
+        <i class="fas fa-home" title="Dashboard"></i>
+        @if (sidebarOpen) {
+          <span>Dashboard</span>
+        }
+      </a>
+
+      <a routerLink="/test1" routerLinkActive="active">
+        <i class="fas fa-list" title="View My Complaints"></i>
+        @if (sidebarOpen) {
+          <span>My Complaints</span>
+        }
+      </a>
+
+      <a routerLink="/test2" routerLinkActive="active">
+        <i class="fas fa-plus-circle" title="Register New Complaint"></i>
+        @if (sidebarOpen) {
+          <span>New Complaint</span>
+        }
+      </a>
+
+      <a routerLink="/test3" routerLinkActive="active">
+        <i class="fas fa-user" title="View My Profile"></i>
+        @if (sidebarOpen) {
+          <span>My Profile</span>
+        }
+      </a>
+    </nav>
+
+    <button class="sidebar-toggle" (click)="toggleSidebar()">
+      <i class="fas" [ngClass]="sidebarOpen ? 'fa-angle-double-left' : 'fa-angle-double-right'"></i>
+    </button>
+  </aside>
+
+  <main class="content">
+    <header class="topbar">
+      <div></div>
+      <div class="topbar-icons">
+        <button class="icon-btn" aria-label="Notifications"><i class="fa-solid fa-bell"></i></button>
+        <button class="icon-btn" aria-label="User Profile"><i class="fa-solid fa-user"></i></button>
+      </div>
+    </header>
+
+    <section class="welcome">
+      <h1>Welcome back, {{ username }}!</h1>
+      <p>Here’s an overview of your recent activity</p>
+    </section>
+
+    <section class="summary-cards">
+      <div class="card">
+        <h2>{{ openCount }}</h2>
+        <p>Open Complaints</p>
+      </div>
+
+      <div class="card">
+        <h2>{{ inProgressCount }}</h2>
+        <p>In Progress</p>
+      </div>
+
+      <div class="card">
+        <h2>{{ resolvedCount }}</h2>
+        <p>Resolved</p>
+      </div>
+    </section>
+
+    <section class="recent-section">
+      <h2>Recent Complaints</h2>
+      <table class="complaints-table">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Subject</th>
+          <th>Status</th>
+          <th>Date Registered</th>
+          <th>Priority</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+          @for (c of complaints.slice(0,5); track c.complaintId) {
+            <tr>
+              <td>#C-{{ c.createdAt | date:'yyyy' }}-{{ c.complaintId }}</td>
+              <td>{{ c.title }}</td>
+              <td>{{ c.status }}</td>
+              <td>{{ c.createdAt | date:'MMM d, yyyy' }}</td>
+              <td>{{ c.priority }}</td>
+
+              <td class="actions">
+                <button class="view-btn">View</button>
+                <button class="ellipsis">⋮</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="text-center">
+                No complaints found for this account.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+  </main>
+</div>
