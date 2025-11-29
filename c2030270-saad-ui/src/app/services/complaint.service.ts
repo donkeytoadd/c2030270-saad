@@ -13,6 +13,9 @@ export class ComplaintService {
 
   constructor(private http: HttpClient) {}
 
+  GetComplaint(complaintId: number): Observable<Complaint>{
+    return this.http.get<Complaint>(`${this.apiUrl}/GetComplaint?complaintId=${complaintId}`)
+  }
   GetComplaintsByConsumerId(consumerId: number): Observable<Complaint[]> {
     return this.http.get<Complaint[]>(`${this.apiUrl}/GetComplaintsByConsumerId?consumerId=${consumerId}`);
   }

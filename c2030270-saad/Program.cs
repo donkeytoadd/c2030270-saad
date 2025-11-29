@@ -4,6 +4,8 @@ using c2030270_saad.Business.Creators.Tenant;
 using c2030270_saad.Business.Creators.Tenant.Interfaces;
 using c2030270_saad.Business.Getters.Complaint;
 using c2030270_saad.Business.Getters.Complaint.Interfaces;
+using c2030270_saad.Business.Getters.Staff;
+using c2030270_saad.Business.Getters.Staff.Interfaces;
 using c2030270_saad.Business.Getters.Tenant;
 using c2030270_saad.Business.Getters.Tenant.Interfaces;
 using c2030270_saad.Business.Updaters.Complaint;
@@ -14,6 +16,8 @@ using c2030270_saad.Data.Queries.Complaint;
 using c2030270_saad.Data.Queries.Complaint.Interfaces;
 using c2030270_saad.Data.Queries.Consumer;
 using c2030270_saad.Data.Queries.Consumer.Interfaces;
+using c2030270_saad.Data.Queries.Staff;
+using c2030270_saad.Data.Queries.Staff.Interfaces;
 using c2030270_saad.Data.Queries.Tenant;
 using c2030270_saad.Data.Queries.Tenant.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +45,8 @@ builder.Services.AddScoped<IUpdateComplaintStatusQuery, UpdateComplaintStatusQue
 builder.Services.AddScoped<ICreateTenantQuery, CreateTenantQuery>();
 builder.Services.AddScoped<IGetAllTenantsQuery, GetAllTenantsQuery>();
 builder.Services.AddScoped<IGetTenantByTenantIdQuery, GetTenantByTenantIdQuery>();
+builder.Services.AddScoped<IStaffGetter, StaffGetter>();
+builder.Services.AddScoped<IGetStaffByStaffIdQuery, GetStaffByStaffIdQuery>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

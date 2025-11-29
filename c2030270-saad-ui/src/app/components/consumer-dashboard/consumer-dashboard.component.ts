@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import {Complaint} from '../../models/complaint.model'
 import {ComplaintService} from '../../services/complaint.service';
 import {HttpClientModule} from '@angular/common/http';
+import {RouterLink, RouterModule} from "@angular/router";
 @Component({
   selector: 'app-consumer-dashboard',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule, RouterLink, RouterModule],
   templateUrl: './consumer-dashboard.component.html',
   styleUrls: ['./consumer-dashboard.component.scss']
 })

@@ -97,8 +97,8 @@
               <td>{{ c.priority }}</td>
 
               <td class="actions">
-                <button class="view-btn">View</button>
-                <button class="ellipsis">⋮</button>
+                  <button class="view-btn" [routerLink]="['/complaint', c.complaintId]">View</button>
+                  <button class="ellipsis">⋮</button>
               </td>
             </tr>
           } @empty {
