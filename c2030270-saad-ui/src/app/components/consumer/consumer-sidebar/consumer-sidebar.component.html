@@ -1,0 +1,42 @@
+<aside class="sidebar" [class.closed]="!sidebarOpen">
+  <div class="sidebar-header">
+    @if (sidebarOpen) {
+      <h2 class="logo">ABC CMS</h2>
+    } @else {
+      <button class="hamburger" (click)="toggleSidebar()"><i class="fas fa-bars"></i></button>
+    }
+  </div>
+  <nav>
+    <a routerLink="/consumer-dashboard" routerLinkActive="active">
+      <i class="fas fa-home" title="Dashboard"></i>
+      @if (sidebarOpen) {
+        <span>Dashboard</span>
+      }
+    </a>
+
+    <a routerLink="/view-all-complaints" routerLinkActive="active">
+      <i class="fas fa-list" title="View My Complaints"></i>
+      @if (sidebarOpen) {
+        <span>My Complaints</span>
+      }
+    </a>
+
+    <a routerLink="/test2" routerLinkActive="active">
+      <i class="fas fa-plus-circle" title="Register New Complaint"></i>
+      @if (sidebarOpen) {
+        <span>New Complaint</span>
+      }
+    </a>
+
+    <a routerLink="/test3" routerLinkActive="active">
+      <i class="fas fa-user" title="View My Profile"></i>
+      @if (sidebarOpen) {
+        <span>My Profile</span>
+      }
+    </a>
+  </nav>
+
+  <button class="sidebar-toggle" (click)="toggleSidebar()">
+    <i class="fas" [ngClass]="sidebarOpen ? 'fa-angle-double-left' : 'fa-angle-double-right'"></i>
+  </button>
+</aside>

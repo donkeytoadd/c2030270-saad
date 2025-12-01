@@ -1,34 +1,38 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {Complaint} from '../../models/complaint.model'
-import {ComplaintService} from '../../services/complaint.service';
+import {Complaint} from '../../../models/complaint.model'
+import {ComplaintService} from '../../../services/complaint.service';
 import {HttpClientModule} from '@angular/common/http';
-import {RouterLink, RouterModule} from "@angular/router";
+import {Router, RouterLink, RouterModule} from "@angular/router";
+import {ConsumerSidebarComponent} from '../consumer-sidebar/consumer-sidebar.component';
+import {ConsumerService} from '../../../services/consumer.service';
+import {Consumer} from '../../../models/consumer.model';
+
 @Component({
   selector: 'app-consumer-dashboard',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, RouterLink, RouterModule],
+  imports: [CommonModule, HttpClientModule, RouterLink, RouterModule, ConsumerSidebarComponent],
   templateUrl: './consumer-dashboard.component.html',
   styleUrls: ['./consumer-dashboard.component.scss']
 })
+
 export class ConsumerDashboardComponent implements OnInit {
   consumerId = 1; //example value, will be replaced by JWT userId claim later
   complaints: Complaint[] = [];
-  sidebarOpen: boolean = true;
-  username: string = 'User';
+  consumer: Consumer;
   openCount: number = 0;
   inProgressCount: number = 0;
   resolvedCount: number = 0;
 
-  constructor(private complaintService: ComplaintService) {}
+  constructor(private complaintService: ComplaintService, private consumerService: ConsumerService) {}
 
   ngOnInit(): void {
+    this.loadConsumerDetails(this.consumerId);
     this.loadComplaints();
   }
 
   loadComplaints() {
-    this.complaintService.
-    GetComplaintsByConsumerId(this.consumerId).subscribe({
+    this.complaintService.GetComplaintsByConsumerId(this.consumerId).subscribe({
       next: (data: Complaint[]) => {
         this.complaints = data;
 
@@ -42,7 +46,15 @@ export class ConsumerDashboardComponent implements OnInit {
     });
   }
 
-  toggleSidebar(): void {
-    this.sidebarOpen = !this.sidebarOpen;
+  loadConsumerDetails(consumerId: number) {
+    this.consumerService.getConsumerByConsumerId(consumerId).subscribe({
+      next: (data: Consumer) => {
+        console.log("consumer", data)
+        this.consumer = data;
+      },
+      error: err => {
+        console.error('Failed to load consumer details', err)
+      }
+    })
   }
 }
