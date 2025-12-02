@@ -40,7 +40,9 @@ namespace c2030270_saad.Business.Creators.Complaint
                 UpdatedAt = null,
                 ResolvedAt = null
             };
+            
             var complaint = this.createComplaintQuery.Execute(mappedComplaint);
+            
             return complaint;
         }
     }

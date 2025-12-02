@@ -6,5 +6,6 @@ namespace c2030270_saad.Business.Getters.Consumer.Interfaces
     {
         List<Consumer> GetConsumersByTenantId(int tenantId);
         Consumer GetConsumerByConsumerId(int consumerId);
+        Consumer GetConsumerByEmail(string email);
     }
 }
