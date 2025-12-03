@@ -1,8 +1,7 @@
-using c2030270_saad.Business.Creators.ConsumerCreator.Interfaces;
-using c2030270_saad.Resources.Consumer;
-
 namespace c2030270_saad.Controllers
 {
+    using c2030270_saad.Resources.Consumer;
+    using Business.Creators.Consumer.Interfaces;
     using Business.Getters.Consumer.Interfaces;
     using Data.Entities;
     using Microsoft.AspNetCore.Mvc;

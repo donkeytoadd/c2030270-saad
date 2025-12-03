@@ -7,6 +7,7 @@ import {Router, RouterLink, RouterModule} from "@angular/router";
 import {ConsumerSidebarComponent} from '../consumer-sidebar/consumer-sidebar.component';
 import {ConsumerService} from '../../../services/consumer.service';
 import {Consumer} from '../../../models/consumer.model';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-consumer-dashboard',
@@ -17,14 +18,14 @@ import {Consumer} from '../../../models/consumer.model';
 })
 
 export class ConsumerDashboardComponent implements OnInit {
-  consumerId = 1; //example value, will be replaced by JWT userId claim later
+  consumerId: number = Number(localStorage.getItem("userId"));
   complaints: Complaint[] = [];
   consumer: Consumer;
   openCount: number = 0;
   inProgressCount: number = 0;
   resolvedCount: number = 0;
 
-  constructor(private complaintService: ComplaintService, private consumerService: ConsumerService) {}
+  constructor(private complaintService: ComplaintService, private consumerService: ConsumerService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.loadConsumerDetails(this.consumerId);

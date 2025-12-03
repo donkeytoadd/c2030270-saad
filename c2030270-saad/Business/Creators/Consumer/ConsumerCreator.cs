@@ -2,33 +2,34 @@ using c2030270_saad.Data.Queries.Consumer.Interfaces;
 
 namespace c2030270_saad.Business.Creators.ConsumerCreator
 {
-    using c2030270_saad.Business.Creators.ConsumerCreator.Interfaces;
     using c2030270_saad.Data.Entities;
     using c2030270_saad.Resources.Consumer;
+    using Consumer.Interfaces;
+    using Data.Enums;
     using Data.Queries.Role.Interfaces;
 
     public class ConsumerCreator : IConsumerCreator
     {
-        private readonly IGetConsumerByConsumerEmailQuery getConsumerByConsumerEmailQuery;
+        private readonly IGetConsumerByEmailQuery getConsumerByEmailQuery;
         private readonly ICreateConsumerQuery createConsumerQuery;
         private readonly IGetRoleByRoleNameQuery getRoleByRoleNameQuery;
         
         public ConsumerCreator(
-            IGetConsumerByConsumerEmailQuery getConsumerByConsumerEmailQuery,
+            IGetConsumerByEmailQuery getConsumerByEmailQuery,
             ICreateConsumerQuery createConsumerQuery,
             IGetRoleByRoleNameQuery getRoleByRoleNameQuery)
         {
-            this.getConsumerByConsumerEmailQuery = getConsumerByConsumerEmailQuery;
+            this.getConsumerByEmailQuery = getConsumerByEmailQuery;
             this.createConsumerQuery = createConsumerQuery;
             this.getRoleByRoleNameQuery = getRoleByRoleNameQuery;
         }
 
         public Consumer CreateConsumer(CreateConsumerRequest request)
         {
-            var consumerExists = this.getConsumerByConsumerEmailQuery.Execute(request.Email);
-            var role = this.getRoleByRoleNameQuery.Execute("Consumer");
+            var consumerExists = this.getConsumerByEmailQuery.Execute(request.Email);
+            var role = this.getRoleByRoleNameQuery.Execute(nameof(RoleEnum.Consumer));
             
-            if (!consumerExists && role != null)
+            if (consumerExists != null && role != null)
             {
                 var mappedConsumer = new Consumer()
                 {

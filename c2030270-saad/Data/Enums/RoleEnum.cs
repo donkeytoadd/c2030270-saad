@@ -1,6 +1,6 @@
 namespace c2030270_saad.Data.Enums
 {
-    public enum Role
+    public enum RoleEnum
     {
         Consumer,
         HelpDeskAgent,

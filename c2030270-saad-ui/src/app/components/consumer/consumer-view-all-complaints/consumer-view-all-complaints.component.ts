@@ -15,7 +15,7 @@ import {ConsumerSidebarComponent} from '../consumer-sidebar/consumer-sidebar.com
 })
 export class ConsumerViewAllComplaintsComponent implements OnInit {
   sidebarOpen: boolean = true;
-  consumerId: number = 1; // replaced by JWT later
+  consumerId: number = Number(localStorage.getItem("userId"));
 
   complaints: Complaint[] = [];
   filteredComplaints: Complaint[] = [];

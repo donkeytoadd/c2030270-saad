@@ -2,8 +2,8 @@ import {Role} from "./role.model";
 
 export interface Staff {
     staffId: number;
-    firstName: string;
-    lastName: string;
+    fName: string;
+    lName: string;
     email: string;
     phone: string;
     roleName: string;

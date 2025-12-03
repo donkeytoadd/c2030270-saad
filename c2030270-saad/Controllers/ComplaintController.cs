@@ -3,6 +3,7 @@ namespace c2030270_saad.Controllers
     using Business.Creators.Complaint.Interfaces;
     using Business.Getters.Complaint.Interfaces;
     using Data.Entities;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Resources.Complaint.Request;
 
@@ -25,6 +26,7 @@ namespace c2030270_saad.Controllers
         }
 
         [HttpGet("GetComplaint")]
+        [Authorize]
         public async Task<ActionResult<Complaint>> GetComplaint(int complaintId)
         {
             try

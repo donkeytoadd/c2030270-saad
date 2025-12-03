@@ -13,6 +13,8 @@ namespace c2030270_saad.Data
         public DbSet<Permission> Permission { get; set; }
         public DbSet<RolePermission> RolePermission { get; set; }
         public DbSet<Complaint> Complaint { get; set; }
+        public DbSet<ComplaintStatusHistory>  ComplaintStatusHistory { get; set; }
+        public DbSet<RefreshToken> RefreshToken { get; set; }
         
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

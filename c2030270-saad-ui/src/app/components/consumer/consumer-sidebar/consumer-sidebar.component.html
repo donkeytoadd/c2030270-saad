@@ -34,6 +34,11 @@
         <span>My Profile</span>
       }
     </a>
+
+    <button class="logout-btn" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i>
+      <span *ngIf="sidebarOpen">Logout</span>
+    </button>
   </nav>
 
   <button class="sidebar-toggle" (click)="toggleSidebar()">
