@@ -1,0 +1,61 @@
+/* Shared layout styles reused from dashboard */
+@import "../consumer-dashboard/consumer-dashboard.component.scss";
+
+.page-title {
+  margin-top: 10px;
+  h1 { font-size: 26px; margin-bottom: 5px; }
+  p { color: #666; }
+}
+
+.filters-row {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+
+  input, select {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+
+  .search-box {
+    flex: 2;
+  }
+}
+
+.complaints-table-section {
+  margin-top: 30px;
+}
+
+.complaints-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  th {
+    background: #eee;
+    text-align: left;
+  }
+
+  .actions {
+    .view-btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      background: black;
+      color: white;
+      cursor: pointer;
+    }
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+  }
+}

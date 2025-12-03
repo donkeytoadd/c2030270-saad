@@ -7,16 +7,35 @@ namespace c2030270_saad.Business.Getters.Consumer
     public class ConsumerGetter : IConsumerGetter
     {
         private readonly IGetConsumersByTenantIdQuery getConsumersByTenantIdQuery;
+        private readonly IGetConsumerByConsumerIdQuery getConsumerByConsumerIdQuery;
+        private readonly IGetConsumerByEmailQuery getConsumerByEmailQuery;
 
-        public ConsumerGetter(IGetConsumersByTenantIdQuery getConsumersByTenantIdQuery)
+        public ConsumerGetter(
+            IGetConsumersByTenantIdQuery getConsumersByTenantIdQuery,
+            IGetConsumerByConsumerIdQuery getConsumerByConsumerIdQuery,
+            IGetConsumerByEmailQuery getConsumerByEmailQuery)
         {
             this.getConsumersByTenantIdQuery = getConsumersByTenantIdQuery;
+            this.getConsumerByConsumerIdQuery = getConsumerByConsumerIdQuery;
+            this.getConsumerByEmailQuery = getConsumerByEmailQuery;
         }
         
         public List<Consumer> GetConsumersByTenantId(int tenantId)
         {
             var consumerList = this.getConsumersByTenantIdQuery.Execute(tenantId);
             return consumerList.Count != 0 ? consumerList : new List<Consumer>(); 
+        }
+
+        public Consumer GetConsumerByConsumerId(int consumerId)
+        {
+            var consumer = this.getConsumerByConsumerIdQuery.Execute(consumerId);
+            return consumer ?? new Consumer();
+        }
+
+        public Consumer GetConsumerByEmail(string email)
+        {
+            var consumer = this.getConsumerByEmailQuery.Execute(email);
+            return consumer ?? new Consumer();
         }
     }
 }
