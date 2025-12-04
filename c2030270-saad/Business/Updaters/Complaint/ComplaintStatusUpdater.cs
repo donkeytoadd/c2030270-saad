@@ -8,20 +8,38 @@ namespace c2030270_saad.Business.Updaters.Complaint
     {
         private readonly IGetComplaintByIdQuery getComplaintByIdQuery;
         private readonly IUpdateComplaintStatusQuery updateComplaintStatusQuery;
+        private readonly ICreateComplaintStatusHistoryQuery _createComplaintStatusHistoryQuery;
         
         public ComplaintStatusUpdater(
             IGetComplaintByIdQuery getComplaintByIdQuery,
-            IUpdateComplaintStatusQuery  updateComplaintStatusQuery) 
+            IUpdateComplaintStatusQuery  updateComplaintStatusQuery,
+            ICreateComplaintStatusHistoryQuery createComplaintStatusHistoryQuery) 
         {
             this.getComplaintByIdQuery = getComplaintByIdQuery;
             this.updateComplaintStatusQuery = updateComplaintStatusQuery;
+            this._createComplaintStatusHistoryQuery = createComplaintStatusHistoryQuery;
         }
 
-        public Complaint UpdateComplaintStatus(int complaintId, string newStatus)
+        public Complaint UpdateComplaintStatus(int complaintId, string newStatus, int changedById)
         {
             var complaint = this.getComplaintByIdQuery.Execute(complaintId);
-            
-            return this.updateComplaintStatusQuery.Execute(complaint!, newStatus);
+
+            if (complaint == null)
+                throw new Exception("Complaint not found.");
+
+            var complaintStatusHistory = new ComplaintStatusHistory()
+            {
+                ComplaintId = complaint.ComplaintId,
+                OldStatus = complaint.Status,
+                NewStatus = newStatus,
+                ChangedAt = DateTime.Now,
+                ChangedById = changedById
+                
+            };
+
+            this._createComplaintStatusHistoryQuery.Execute(complaintStatusHistory);
+
+            return this.updateComplaintStatusQuery.Execute(complaint, newStatus);
         }
     }
 }

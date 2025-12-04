@@ -5,21 +5,25 @@ namespace c2030270_saad.Business.Creators.Complaint
     using Data.Queries.Consumer.Interfaces;
     using Interfaces;
     using Resources.Complaint.Request;
+    using Updaters.Complaint.Interfaces;
 
     public class ComplaintCreator : IComplaintCreator
     {
         private readonly ICreateComplaintQuery createComplaintQuery;
         private readonly IGetConsumerByConsumerIdQuery getConsumerByConsumerIdQuery;
+        private readonly IComplaintStatusUpdater complaintStatusUpdater;
         
         public ComplaintCreator(
             ICreateComplaintQuery createComplaintQuery,
-            IGetConsumerByConsumerIdQuery getConsumerByConsumerIdQuery)
+            IGetConsumerByConsumerIdQuery getConsumerByConsumerIdQuery,
+            IComplaintStatusUpdater complaintStatusUpdater)
         {
             this.createComplaintQuery = createComplaintQuery;
             this.getConsumerByConsumerIdQuery = getConsumerByConsumerIdQuery;
+            this.complaintStatusUpdater = complaintStatusUpdater;
         }
         
-        public Complaint? CreateComplaint(CreateComplaintRequest complaintRequest)
+        public Complaint? CreateComplaint(CreateComplaintRequest complaintRequest, int changedById)
         {
             var consumer = this.getConsumerByConsumerIdQuery.Execute(complaintRequest.ConsumerId);
             
@@ -42,6 +46,8 @@ namespace c2030270_saad.Business.Creators.Complaint
             };
             
             var complaint = this.createComplaintQuery.Execute(mappedComplaint);
+            
+            this.complaintStatusUpdater.UpdateComplaintStatus(complaint.ComplaintId, complaint.Status, changedById);
             
             return complaint;
         }

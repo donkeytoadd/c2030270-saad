@@ -2,6 +2,7 @@ namespace c2030270_saad.Controllers
 {
     using Business.Creators.Complaint.Interfaces;
     using Business.Getters.Complaint.Interfaces;
+    using Business.Updaters.Complaint.Interfaces;
     using Data.Entities;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -14,15 +15,18 @@ namespace c2030270_saad.Controllers
         private readonly ILogger<ComplaintController> logger;
         private readonly IComplaintGetter complaintGetter;
         private readonly IComplaintCreator complaintCreator;
+        private readonly IComplaintStatusUpdater complaintStatusUpdater;
 
         public ComplaintController(
             ILogger<ComplaintController> logger,
             IComplaintGetter complaintGetter,
-            IComplaintCreator complaintCreator)
+            IComplaintCreator complaintCreator,
+            IComplaintStatusUpdater complaintStatusUpdater)
         {
             this.logger = logger;
             this.complaintGetter = complaintGetter;
             this.complaintCreator = complaintCreator;
+            this.complaintStatusUpdater = complaintStatusUpdater;
         }
 
         [HttpGet("GetComplaint")]
@@ -83,14 +87,15 @@ namespace c2030270_saad.Controllers
             }
         }
 
-        [HttpPost("AddComplaint")]
-        public async Task<ActionResult> AddComplaint([FromBody] CreateComplaintRequest complaintRequest)
+        [HttpPost("CreateComplaint")]
+        public async Task<ActionResult> CreateComplaint([FromBody] CreateComplaintRequest complaintRequest)
         {
             try
             {
                 logger.LogInformation($"Creating new complaint for ConsumerId: {complaintRequest.ConsumerId}");
-
-                var complaint = this.complaintCreator.CreateComplaint(complaintRequest);
+                
+                var userId = int.Parse(User.FindFirst("userId")?.Value ?? "0");
+                var complaint = this.complaintCreator.CreateComplaint(complaintRequest, userId);
 
                 return Ok(complaint);
             }
@@ -98,6 +103,32 @@ namespace c2030270_saad.Controllers
             {
                 logger.LogError(ex, $"Error creating complaint for ConsumerId {complaintRequest.ConsumerId}");
                 return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPost("UpdateComplaintStatus")]
+        [Authorize]
+        public async Task<ActionResult> UpdateComplaintStatus([FromBody] UpdateComplaintStatusRequest request)
+        {
+            if (request.ComplaintId <= 0 || string.IsNullOrWhiteSpace(request.NewStatus))
+                return BadRequest("Invalid request data.");
+
+            var userIdClaim = User.FindFirst("userId")?.Value;
+
+            if (userIdClaim == null)
+                return Unauthorized("Unable to identify user from token.");
+
+            int userId = int.Parse(userIdClaim);
+
+            try
+            {
+                var updatedComplaint = complaintStatusUpdater.UpdateComplaintStatus(request.ComplaintId, request.NewStatus, userId);
+
+                return Ok(updatedComplaint);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Failed to update complaint status: {ex.Message}");
             }
         }
     }
