@@ -1,35 +1,34 @@
-using c2030270_saad.Data.Queries.Consumer.Interfaces;
-
-namespace c2030270_saad.Business.Creators.ConsumerCreator
+namespace c2030270_saad.Business.Creators.Consumer
 {
+    using c2030270_saad.Business.Creators.Consumer.Interfaces;
     using c2030270_saad.Data.Entities;
+    using c2030270_saad.Data.Enums;
+    using c2030270_saad.Data.Queries.Consumer.Interfaces;
+    using c2030270_saad.Data.Queries.Role.Interfaces;
     using c2030270_saad.Resources.Consumer;
-    using Consumer.Interfaces;
-    using Data.Enums;
-    using Data.Queries.Role.Interfaces;
 
     public class ConsumerCreator : IConsumerCreator
     {
-        private readonly IGetConsumerByEmailQuery getConsumerByEmailQuery;
+        private readonly IGetConsumerByEmailAndTenantIdQuery getConsumerByEmailAndTenantIdQuery;
         private readonly ICreateConsumerQuery createConsumerQuery;
         private readonly IGetRoleByRoleNameQuery getRoleByRoleNameQuery;
         
         public ConsumerCreator(
-            IGetConsumerByEmailQuery getConsumerByEmailQuery,
+            IGetConsumerByEmailAndTenantIdQuery getConsumerByEmailAndTenantIdQuery,
             ICreateConsumerQuery createConsumerQuery,
             IGetRoleByRoleNameQuery getRoleByRoleNameQuery)
         {
-            this.getConsumerByEmailQuery = getConsumerByEmailQuery;
+            this.getConsumerByEmailAndTenantIdQuery = getConsumerByEmailAndTenantIdQuery;
             this.createConsumerQuery = createConsumerQuery;
             this.getRoleByRoleNameQuery = getRoleByRoleNameQuery;
         }
 
         public Consumer CreateConsumer(CreateConsumerRequest request)
         {
-            var consumerExists = this.getConsumerByEmailQuery.Execute(request.Email);
+            var consumerExists = this.getConsumerByEmailAndTenantIdQuery.Execute(request.Email, request.TenantId);
             var role = this.getRoleByRoleNameQuery.Execute(nameof(RoleEnum.Consumer));
             
-            if (consumerExists != null && role != null)
+            if (consumerExists == null && role != null)
             {
                 var mappedConsumer = new Consumer()
                 {

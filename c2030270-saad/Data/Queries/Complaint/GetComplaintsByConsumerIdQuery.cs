@@ -13,11 +13,14 @@ namespace c2030270_saad.Data.Queries.Complaint
             this.contextFactory = contextFactory;
         }
         
-        public List<Complaint> Execute(int consumerId)
+        public List<Complaint> Execute(int consumerId, int tenantId)
         {
             using (var context = this.contextFactory.CreateDbContext())
             {
-                return context.Complaint.Where(x=>x.ConsumerId == consumerId).ToList();             
+                return context.Complaint
+                    .Where(x=>x.ConsumerId == consumerId && x.TenantId == tenantId)
+                    .OrderByDescending(x=>x.CreatedAt)
+                    .ToList();             
             }
         }
     }

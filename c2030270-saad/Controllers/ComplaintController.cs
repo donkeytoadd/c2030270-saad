@@ -28,6 +28,22 @@ namespace c2030270_saad.Controllers
             this.complaintCreator = complaintCreator;
             this.complaintStatusUpdater = complaintStatusUpdater;
         }
+        
+        private bool GetTenantId(out int tenantId)
+        {
+            tenantId = 0;
+            var claim = User.FindFirst("tenantId")?.Value;
+
+            return claim != null && int.TryParse(claim, out tenantId);
+        }
+
+        private bool GetUserId(out int userId)
+        {
+            userId = 0;
+            var claim = User.FindFirst("userId")?.Value;
+
+            return claim != null && int.TryParse(claim, out userId);
+        }
 
         [HttpGet("GetComplaint")]
         [Authorize]
@@ -35,8 +51,11 @@ namespace c2030270_saad.Controllers
         {
             try
             {
+                if (!GetTenantId(out var tenantId))
+                    return Unauthorized("Tenant identification missing.");
+                
                 logger.LogInformation($"Getting complaint with ID {complaintId}");
-                var complaint = this.complaintGetter.GetComplaint(complaintId);
+                var complaint = this.complaintGetter.GetComplaint(complaintId, tenantId);
                 
                 if (complaint == null)
                 {
@@ -58,9 +77,12 @@ namespace c2030270_saad.Controllers
         {
             try
             {
+                if (!GetTenantId(out var tenantId))
+                    return Unauthorized("Tenant identification missing.");
+                
                 logger.LogInformation($"Getting all complaints for ConsumerId {consumerId}");
-    
-                var complaintList = this.complaintGetter.GetComplaintsByConsumerId(consumerId);
+                var complaintList = this.complaintGetter.GetComplaintsByConsumerId(consumerId, tenantId);
+                
                 return Ok(complaintList);
             }
             catch (Exception ex)
@@ -76,8 +98,8 @@ namespace c2030270_saad.Controllers
             try
             {
                 logger.LogInformation($"Getting all complaints for tenant with tenantId {tenantId}");
-    
                 var complaintList = this.complaintGetter.GetComplaintsByTenantId(tenantId);
+                
                 return Ok(complaintList);
             }
             catch (Exception ex)
@@ -88,14 +110,16 @@ namespace c2030270_saad.Controllers
         }
 
         [HttpPost("CreateComplaint")]
+        [Consumes("multipart/form-data")]
         public async Task<ActionResult> CreateComplaint([FromBody] CreateComplaintRequest complaintRequest)
         {
             try
             {
-                logger.LogInformation($"Creating new complaint for ConsumerId: {complaintRequest.ConsumerId}");
+                if (!GetTenantId(out var tenantId) || !GetUserId(out var userId))
+                    return Unauthorized("User or tenant identification missing.");
                 
-                var userId = int.Parse(User.FindFirst("userId")?.Value ?? "0");
-                var complaint = this.complaintCreator.CreateComplaint(complaintRequest, userId);
+                logger.LogInformation($"Creating new complaint for ConsumerId: {complaintRequest.ConsumerId}");
+                var complaint = this.complaintCreator.CreateComplaint(complaintRequest, userId, tenantId);
 
                 return Ok(complaint);
             }
@@ -110,19 +134,15 @@ namespace c2030270_saad.Controllers
         [Authorize]
         public async Task<ActionResult> UpdateComplaintStatus([FromBody] UpdateComplaintStatusRequest request)
         {
-            if (request.ComplaintId <= 0 || string.IsNullOrWhiteSpace(request.NewStatus))
-                return BadRequest("Invalid request data.");
-
-            var userIdClaim = User.FindFirst("userId")?.Value;
-
-            if (userIdClaim == null)
-                return Unauthorized("Unable to identify user from token.");
-
-            int userId = int.Parse(userIdClaim);
-
             try
             {
-                var updatedComplaint = complaintStatusUpdater.UpdateComplaintStatus(request.ComplaintId, request.NewStatus, userId);
+                if (request.ComplaintId <= 0 || string.IsNullOrWhiteSpace(request.NewStatus))
+                    return BadRequest("Invalid request data.");
+            
+                if (!GetTenantId(out var tenantId) || !GetUserId(out var userId))
+                    return Unauthorized("User or tenant identification missing.");
+                
+                var updatedComplaint = complaintStatusUpdater.UpdateComplaintStatus(request.ComplaintId, tenantId, request.NewStatus, userId);
 
                 return Ok(updatedComplaint);
             }

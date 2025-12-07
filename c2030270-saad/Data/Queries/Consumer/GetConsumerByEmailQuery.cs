@@ -13,11 +13,13 @@ namespace c2030270_saad.Data.Queries.Consumer
             this.contextFactory = contextFactory;
         }
         
-        public Consumer? Execute(string email)
+        public List<Consumer> Execute(string email)
         {
             using (var context = this.contextFactory.CreateDbContext())
             {
-                return context.Consumer.FirstOrDefault(x => x.Email == email);
+                return context.Consumer
+                    .Include(x => x.Tenant)
+                    .Where(x => x.Email == email).ToList();
             }
         }
     }

@@ -23,7 +23,7 @@ namespace c2030270_saad.Middleware
             return Convert.ToBase64String(bytes);
         }
 
-        public RefreshToken CreateToken(int userId, int roleId)
+        public RefreshToken CreateToken(int userId, int tenantId, int roleId)
         {
             using (var context = contextFactory.CreateDbContext())
             {
@@ -31,6 +31,7 @@ namespace c2030270_saad.Middleware
                 {
                     UserId = userId,
                     RoleId = roleId,
+                    TenantId = tenantId,
                     Token = GenerateSecureToken(),
                     CreatedAt = DateTime.Now,
                     ExpiresAt = DateTime.Now.AddDays(RefreshTokenDays)

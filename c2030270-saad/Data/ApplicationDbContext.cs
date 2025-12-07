@@ -10,11 +10,10 @@ namespace c2030270_saad.Data
         public DbSet<Consumer> Consumer { get; set; }
         public DbSet<Staff> Staff { get; set; }
         public DbSet<Role> Role { get; set; }
-        public DbSet<Permission> Permission { get; set; }
-        public DbSet<RolePermission> RolePermission { get; set; }
         public DbSet<Complaint> Complaint { get; set; }
         public DbSet<ComplaintStatusHistory>  ComplaintStatusHistory { get; set; }
         public DbSet<RefreshToken> RefreshToken { get; set; }
+        public DbSet<ComplaintAttachment> ComplaintAttachment { get; set; }
         
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

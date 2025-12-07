@@ -4,6 +4,6 @@ namespace c2030270_saad.Business.Updaters.Complaint.Interfaces
 
     public interface IComplaintStatusUpdater
     {
-        Complaint UpdateComplaintStatus(int complaintId, string newStatus, int changedById);
+        Complaint UpdateComplaintStatus(int complaintId, int tenantId, string newStatus, int changedById);
     }
 }

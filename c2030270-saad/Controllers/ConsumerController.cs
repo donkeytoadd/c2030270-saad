@@ -4,6 +4,7 @@ namespace c2030270_saad.Controllers
     using Business.Creators.Consumer.Interfaces;
     using Business.Getters.Consumer.Interfaces;
     using Data.Entities;
+    using Data.Queries.Consumer.Interfaces;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController] 
@@ -13,15 +14,18 @@ namespace c2030270_saad.Controllers
         private readonly ILogger<ConsumerController> logger;
         private readonly IConsumerGetter consumerGetter;
         private readonly IConsumerCreator consumerCreator;
+        private readonly ISearchForConsumerQuery searchForConsumerQuery;
 
         public ConsumerController(
             ILogger<ConsumerController> logger,
             IConsumerGetter consumerGetter,
-            IConsumerCreator consumerCreator)
+            IConsumerCreator consumerCreator,
+            ISearchForConsumerQuery searchForConsumerQuery)
         {
             this.logger = logger;
             this.consumerGetter = consumerGetter;
             this.consumerCreator = consumerCreator;
+            this.searchForConsumerQuery = searchForConsumerQuery;
         }
 
         [HttpGet("GetConsumersByTenantId")]
@@ -47,8 +51,10 @@ namespace c2030270_saad.Controllers
             try
             {
                 logger.LogInformation($"Getting consumer details for consumer with consumerId {consumerId}");
+                
+                int tenantId = int.Parse(User.FindFirst("tenantId")!.Value);
 
-                var consumer = this.consumerGetter.GetConsumerByConsumerId(consumerId);
+                var consumer = this.consumerGetter.GetConsumerByConsumerId(consumerId, tenantId);
                 return Ok(consumer);
             }
             catch (Exception ex)
@@ -73,6 +79,17 @@ namespace c2030270_saad.Controllers
                 logger.LogError(ex, $"Error creating new consumer");
                 return StatusCode(500, "Internal server error");
             }
+        }
+        
+        [HttpGet("search")]
+        public ActionResult<List<SearchConsumerResult>> SearchConsumers([FromQuery] string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                return Ok(new List<SearchConsumerResult>());
+
+            var results = this.searchForConsumerQuery.Execute(query);
+
+            return Ok(results);
         }
     }
 }

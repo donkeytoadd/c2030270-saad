@@ -1,31 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { tap, map } from 'rxjs/operators';
-import {Observable, throwError} from 'rxjs';
-
-export interface LoginResponse {
-  token: string;
-  userId: number;
-  role: string;
-  refreshToken: string;
-}
+import { tap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { LoginResponse } from '../models/login-response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:5122/api/auth/login';
+  private baseUrl = 'http://localhost:5122/api/Auth';
 
   constructor(private http: HttpClient) {}
 
-  login(email: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(this.apiUrl, { email, password }).pipe(
+  findTenants(email: string): Observable<any[]> {
+    return this.http.post<any[]>(`${this.baseUrl}/find-tenants`, { email });
+  }
+
+  login(email: string, password: string, tenantId: number): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.baseUrl}/login`, { email, password, tenantId }).pipe(
       tap(res => {
         localStorage.setItem('token', res.token);
+        localStorage.setItem('refreshToken', res.refreshToken);
         localStorage.setItem('role', res.role);
         localStorage.setItem('userId', res.userId.toString());
-        localStorage.setItem('refreshToken', res.refreshToken)
+        localStorage.setItem('tenantId', res.tenantId.toString());
       })
     );
   }
@@ -34,30 +33,35 @@ export class AuthService {
     localStorage.clear();
   }
 
-  getToken(): string | null {
-    return localStorage.getItem('token');
-  }
-
   refreshToken() {
     const refreshToken = localStorage.getItem('refreshToken');
     if (!refreshToken) return throwError(() => new Error('No refresh token'));
 
-    return this.http.post<LoginResponse>('http://localhost:5122/api/auth/refresh', {refreshToken})
+    return this.http.post<LoginResponse>(`${this.baseUrl}/refresh`, { refreshToken })
       .pipe(
         tap(res => {
           localStorage.setItem('token', res.token);
           localStorage.setItem('refreshToken', res.refreshToken);
           localStorage.setItem('role', res.role);
           localStorage.setItem('userId', res.userId.toString());
+          localStorage.setItem('tenantId', res.tenantId.toString());
         })
       );
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
   }
 
   getRole(): string | null {
     return localStorage.getItem('role');
   }
 
-  isLoggedIn(): boolean {
-    return !!this.getToken();
+  getUserId(): number {
+    return Number(localStorage.getItem('userId')) || 0;
+  }
+
+  getTenantId(): number {
+    return Number(localStorage.getItem('tenantId')) || 0;
   }
 }

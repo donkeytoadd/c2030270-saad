@@ -4,7 +4,7 @@ namespace c2030270_saad.Business.Getters.Staff.Interfaces
 
     public interface IStaffGetter
     {
-        Staff GetStaffByStaffId(int staffId);
-        Staff GetStaffByStaffEmail(string email);
+        Staff GetStaffByStaffId(int staffId, int  tenantId);
+        List<Staff> GetStaffByStaffEmail(string email);
     }
 }

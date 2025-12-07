@@ -4,6 +4,6 @@ namespace c2030270_saad.Data.Queries.Complaint.Interfaces
 
     public interface IGetComplaintByIdQuery
     {
-        Complaint? Execute(int complaintID);
+        Complaint? Execute(int complaintId, int tenantId);
     }
 }

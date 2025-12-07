@@ -4,6 +4,6 @@ namespace c2030270_saad.Data.Queries.Consumer.Interfaces
 
     public interface IGetConsumerByConsumerIdQuery
     {
-        Consumer? Execute(int consumerId);
+        Consumer? Execute(int consumerId, int tenantId);
     }
 }

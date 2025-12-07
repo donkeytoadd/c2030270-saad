@@ -20,16 +20,16 @@ namespace c2030270_saad.Business.Getters.Complaint
             this.getAllComplaintsByTenantIdQuery =  getAllComplaintsByTenantIdQuery;
         }
         
-        public Complaint? GetComplaint(int complaintId)
+        public Complaint GetComplaint(int complaintId, int tenantId)
         {
-            var complaint = this.getComplaintByIdQuery.Execute(complaintId);
+            var complaint = this.getComplaintByIdQuery.Execute(complaintId, tenantId);
 
             return complaint ?? new Complaint();
         }
 
-        public List<Complaint> GetComplaintsByConsumerId(int consumerId)
+        public List<Complaint> GetComplaintsByConsumerId(int consumerId, int tenantId)
         {
-            var complaintList = this.getAllComplaintsByConsumerIdQuery.Execute(consumerId);
+            var complaintList = this.getAllComplaintsByConsumerIdQuery.Execute(consumerId, tenantId);
             return complaintList.Count != 0 ? complaintList : new List<Complaint>();
         }
 

@@ -26,16 +26,16 @@ namespace c2030270_saad.Business.Getters.Consumer
             return consumerList.Count != 0 ? consumerList : new List<Consumer>(); 
         }
 
-        public Consumer GetConsumerByConsumerId(int consumerId)
+        public Consumer GetConsumerByConsumerId(int consumerId, int tenantId)
         {
-            var consumer = this.getConsumerByConsumerIdQuery.Execute(consumerId);
+            var consumer = this.getConsumerByConsumerIdQuery.Execute(consumerId, tenantId);
             return consumer ?? new Consumer();
         }
 
-        public Consumer GetConsumerByEmail(string email)
+        public List<Consumer> GetConsumerByEmail(string email)
         {
             var consumer = this.getConsumerByEmailQuery.Execute(email);
-            return consumer ?? new Consumer();
+            return consumer;
         }
     }
 }

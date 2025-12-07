@@ -12,5 +12,7 @@ namespace c2030270_saad.Data.Entities
         public string PasswordHash { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
+        
+        public Tenant Tenant { get; set; }
     }
 }

@@ -4,20 +4,21 @@ namespace c2030270_saad.Data.Queries.Staff
     using Interfaces;
     using Microsoft.EntityFrameworkCore;
 
-    public class GetStaffByStaffIdQuery :IGetStaffByStaffIdQuery
+    public class GetStaffByEmailAndTenantIdQuery : IGetStaffByEmailAndTenantIdQuery
     {
         private readonly IDbContextFactory<ApplicationDbContext> contextFactory;
-
-        public GetStaffByStaffIdQuery(IDbContextFactory<ApplicationDbContext> contextFactory)
+        
+        public GetStaffByEmailAndTenantIdQuery(IDbContextFactory<ApplicationDbContext> contextFactory)
         {
             this.contextFactory = contextFactory;
         }
-
-        public Staff Execute(int staffId, int tenantId)
+        
+        public Staff? Execute(string email, int tenantId)
         {
             using (var context = this.contextFactory.CreateDbContext())
             {
-                return context.Staff.Include(s => s.Role).FirstOrDefault(x => x.StaffId == staffId && x.TenantId == tenantId);
+                return context.Staff.
+                    FirstOrDefault(x => x.Email == email && x.TenantId == tenantId);
             }
         }
     }

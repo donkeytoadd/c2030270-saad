@@ -1,84 +1,87 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import {NgClass} from '@angular/common';
-import {AuthService} from '../../services/auth.service';
+import { NgClass } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
+  standalone: true,
   imports: [FormsModule, NgClass],
+  templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  step: number = 1;
 
   email: string = "";
-  password: string = "";
-  rememberMe: boolean = false;
-  showPassword: boolean = false;
+  password: string  = "";
+
   emailError: string = "";
-  passwordError: string = "";
   errorMessage: string = "";
-  formValid: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService) { }
+  tenants: any[] = [];
+  selectedTenantId: number | null = null;
 
-  togglePassword(): void {
+  showPassword: boolean = false;
+
+  constructor(private router: Router, private auth: AuthService) {}
+
+  findTenants() {
+    this.emailError = "";
+
+    if (!this.email.trim()) {
+      this.emailError = "Email is required.";
+      return;
+    }
+
+    this.auth.findTenants(this.email).subscribe({
+      next: (tenants) => {
+        this.tenants = tenants;
+        this.step = 2;
+      },
+      error: () => {
+        this.emailError = "No accounts found with this email.";
+      }
+    });
+  }
+
+  login() {
+    if (!this.selectedTenantId) {
+      this.errorMessage = "Please select which organisation you want to log into.";
+      return;
+    }
+
+    if (!this.password.trim()) {
+      this.errorMessage = "Password is required.";
+      return;
+    }
+
+    this.auth.login(this.email, this.password, this.selectedTenantId).subscribe({
+      next: res => {
+        if (res.role === "Consumer") {
+          this.router.navigate(['/consumer-dashboard']);
+        }
+        else if (res.role === "Staff") {
+          this.router.navigate(['/support-person-dashboard']);
+        }
+        else {
+          this.errorMessage = "Unknown role returned.";
+        }
+      },
+      error: () => {
+        this.errorMessage = "Invalid password.";
+      }
+    });
+  }
+
+  togglePassword() {
     this.showPassword = !this.showPassword;
   }
 
-  validateEmail() {
-    if (!this.email) {
-      this.emailError = "Email is required.";
-    } else if (!/^\S+@\S+\.\S+$/.test(this.email)) {
-      this.emailError = "Please enter a valid email address.";
-    } else {
-      this.emailError = "";
-    }
-    this.updateFormValidity();
-  }
-
-  validatePassword() {
-    if (!this.password) {
-      this.passwordError = "Password is required.";
-    } else if (this.password.length < 6) {
-      this.passwordError = "Password must be at least 6 characters.";
-    } else {
-      this.passwordError = "";
-    }
-    this.updateFormValidity();
-  }
-
-  updateFormValidity() {
-    this.formValid = !this.emailError && !this.passwordError && !!this.email && !!this.password;
-  }
-
-  onSubmit(): void {
-    this.validateEmail();
-    this.validatePassword();
-
-    if (!this.formValid) return;
-
-    this.authService.login(this.email, this.password).subscribe({
-      next: (response) => {
-        const role = response.role;
-
-        if (role === 'Consumer')
-          this.router.navigate(['/consumer-dashboard']);
-
-        else if (role === 'SupportPerson')
-          this.router.navigate(['/support-person-dashboard']);
-
-        // else if (role === 'Admin')
-        //   this.router.navigate(['/admin-dashboard']);
-
-        else
-          this.errorMessage = "Unknown role returned by server.";
-      },
-
-      error: () => {
-        this.errorMessage = "Invalid email or password.";
-      }
-    });
+  goBack() {
+    this.step = 1;
+    this.password = "";
+    this.errorMessage = "";
   }
 }

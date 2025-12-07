@@ -13,11 +13,15 @@ namespace c2030270_saad.Data.Queries.Staff
             this.contextFactory = contextFactory;
         }
 
-        public Staff? Execute(string staffEmail)
+        public List<Staff> Execute(string staffEmail)
         {
             using (var context = this.contextFactory.CreateDbContext())
             {
-                return context.Staff.FirstOrDefault(s => s.Email == staffEmail);
+                return context.Staff
+                    .Include(s=>s.Role)
+                    .Include(s=>s.Tenant)
+                    .Where(s => s.Email == staffEmail)
+                    .ToList();
             }
         }
     }

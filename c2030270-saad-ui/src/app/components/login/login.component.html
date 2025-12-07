@@ -2,69 +2,52 @@
   <header class="header">
     <h1 class="logo">ABC Complaint Management System</h1>
   </header>
+
   <div class="login-card">
     <h2 class="title">Sign Into Your Account</h2>
-    <p class="subtitle">Welcome back! Please enter your details.</p>
-    @if (errorMessage){
+
+    @if (errorMessage) {
       <div class="error-box">{{ errorMessage }}</div>
     }
 
-    <label for="email">Email</label>
-    <input
-      id="email"
-      type="email"
-      [(ngModel)]="email"
-      placeholder="Enter your email"
-      aria-label="Email address"
-      (blur)="validateEmail()"
-      required
-    />
-    <p class="field-error"> @if (emailError){{{ emailError }}}</p>
+    @if (step === 1) {
+      <label>Email Address</label>
+      <input type="email"
+             [(ngModel)]="email"
+             placeholder="Enter your email">
 
-    <label for="password">Password</label>
-    <div class="password-field">
-      <input
-        id="password"
-        [type]="showPassword ? 'text' : 'password'"
-        [(ngModel)]="password"
-        placeholder="Enter your password"
-        aria-label="Password"
-        (blur)="validatePassword()"
-        required
-      />
+      @if (emailError) {
+        <p class="field-error">{{ emailError }}</p>
+      }
 
-      <button type="button"
-              class="toggle-btn"
-              (click)="togglePassword()"
-              aria-label="Toggle password visibility">
-        <i class="fa-solid" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
-      </button>
-    </div>
-    <p class="field-error">@if (passwordError){{{ passwordError }}}</p>
+      <button class="sign-btn" (click)="findTenants()">Continue</button>
+    }
 
-    <div class="row space-between">
-      <label class="checkbox">
-        <input type="checkbox" [(ngModel)]="rememberMe" />
-        Remember me
-      </label>
+    @if (step === 2 && tenants.length > 0) {
+      <label>Select Organisation</label>
+      <select [(ngModel)]="selectedTenantId">
+        <option [value]="null">Select</option>
+        @for (t of tenants; track t.tenantId) {
+          <option [value]="t.tenantId">
+            {{ t.tenantName }} ({{ t.role }})
+          </option>
+        }
+      </select>
 
-      <a class="forgot" href="#">Forgot password?</a>
-    </div>
+      <label>Password</label>
+      <div class="password-field">
+        <input [type]="showPassword ? 'text' : 'password'"
+               [(ngModel)]="password"
+               placeholder="Enter your password"/>
 
-    <button
-      class="sign-btn"
-      (click)="onSubmit()"
-      [disabled]="!formValid">
-      Sign In
-    </button>
+        <button type="button" class="toggle-btn" (click)="togglePassword()">
+          <i class="fa-solid" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </button>
+      </div>
 
-    <div class="divider">
-      <span>Or continue with</span>
-    </div>
+      <button class="sign-btn" (click)="login()">Login</button>
 
-    <div class="social-row">
-      <button class="social-btn">Google</button>
-      <button class="social-btn">Use organisation login</button>
-    </div>
+      <button class="back-btn" (click)="goBack()">Back</button>
+    }
   </div>
 </div>

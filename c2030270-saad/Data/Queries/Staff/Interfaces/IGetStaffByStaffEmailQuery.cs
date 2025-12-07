@@ -4,6 +4,6 @@ namespace c2030270_saad.Data.Queries.Staff.Interfaces
 
     public interface IGetStaffByStaffEmailQuery
     {
-        Staff? Execute(string staffEmail);
+        List<Staff> Execute(string staffEmail);
     }
 }

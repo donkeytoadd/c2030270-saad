@@ -9,17 +9,17 @@ namespace c2030270_saad.Business.Creators.Staff
 
     public class StaffCreator : IStaffCreator
     {
-        private readonly IGetStaffByStaffEmailQuery getStaffByStaffEmailQuery;
+        private readonly IGetStaffByEmailAndTenantIdQuery getStaffByEmailAndTenantIdQuery;
         private readonly IGetRoleByRoleNameQuery getRoleByRoleNameQuery;
         private readonly ICreateStaffQuery createStaffQuery;
 
         public StaffCreator(
             ICreateStaffQuery createStaffQuery,
-            IGetStaffByStaffEmailQuery getStaffByStaffEmailQuery,
+            IGetStaffByEmailAndTenantIdQuery getStaffByEmailAndTenantIdQuery,
             IGetRoleByRoleNameQuery getRoleByRoleNameQuery)
         {
             this.createStaffQuery = createStaffQuery;
-            this.getStaffByStaffEmailQuery = getStaffByStaffEmailQuery;
+            this.getStaffByEmailAndTenantIdQuery = getStaffByEmailAndTenantIdQuery;
             this.getRoleByRoleNameQuery = getRoleByRoleNameQuery;
         }
 
@@ -27,7 +27,7 @@ namespace c2030270_saad.Business.Creators.Staff
         {
             try
             {
-                var staffExists = this.getStaffByStaffEmailQuery.Execute(createStaffRequest.Email);
+                var staffExists = this.getStaffByEmailAndTenantIdQuery.Execute(createStaffRequest.Email, createStaffRequest.TenantId);
                 var role = this.getRoleByRoleNameQuery.Execute(roleEnum.ToString());
                 
                 if (staffExists == null && role != null)

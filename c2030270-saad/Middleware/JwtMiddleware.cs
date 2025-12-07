@@ -17,7 +17,7 @@ namespace c2030270_saad.Middleware
             this.config = config;
         }
 
-        public string GenerateToken(int userId, string email, string role)
+        public string GenerateToken(int userId, int tenantId, string email, string role)
         {
             var jwtSettings = config.GetSection("Jwt");
             var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
@@ -27,6 +27,7 @@ namespace c2030270_saad.Middleware
                 new Claim(JwtRegisteredClaimNames.Sub, email),
                 new Claim("userId", userId.ToString()),
                 new Claim(ClaimTypes.Role, role),
+                new Claim("tenantId", tenantId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 

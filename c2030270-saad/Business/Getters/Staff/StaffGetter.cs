@@ -17,17 +17,17 @@ namespace c2030270_saad.Business.Getters.Staff
             this.getStaffByStaffEmailQuery = getStaffByStaffEmailQuery;
         }
 
-        public Staff GetStaffByStaffId(int staffId)
+        public Staff GetStaffByStaffId(int staffId, int tenantId)
         {
-            var staff = this.getStaffByStaffIdQuery.Execute(staffId);
+            var staff = this.getStaffByStaffIdQuery.Execute(staffId, tenantId);
 
             return staff ?? new Staff();
         }
 
-        public Staff GetStaffByStaffEmail(string staffEmail)
+        public List<Staff> GetStaffByStaffEmail(string staffEmail)
         {
             var staff = this.getStaffByStaffEmailQuery.Execute(staffEmail);
-            return staff ?? new Staff();
+            return staff;
         }
     }
 }

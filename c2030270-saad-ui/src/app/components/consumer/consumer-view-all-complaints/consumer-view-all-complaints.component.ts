@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { Complaint } from '../../../models/complaint.model';
 import { ComplaintService } from '../../../services/complaint.service';
 import {ConsumerSidebarComponent} from '../consumer-sidebar/consumer-sidebar.component';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-consumer-view-all-complaints',
@@ -15,7 +16,7 @@ import {ConsumerSidebarComponent} from '../consumer-sidebar/consumer-sidebar.com
 })
 export class ConsumerViewAllComplaintsComponent implements OnInit {
   sidebarOpen: boolean = true;
-  consumerId: number = Number(localStorage.getItem("userId"));
+  consumerId: number;
 
   complaints: Complaint[] = [];
   filteredComplaints: Complaint[] = [];
@@ -28,9 +29,11 @@ export class ConsumerViewAllComplaintsComponent implements OnInit {
   statuses = ["All", "Open", "In Progress", "Resolved"];
   priorities = ["All", "Low", "Medium", "High"];
 
-  constructor(private complaintService: ComplaintService) {}
+  constructor(private complaintService: ComplaintService, private authService: AuthService){}
 
   ngOnInit(): void {
+    this.consumerId = this.authService.getUserId();
+
     this.loadComplaints();
   }
 

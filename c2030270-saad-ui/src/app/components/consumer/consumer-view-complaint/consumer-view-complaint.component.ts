@@ -37,6 +37,7 @@ export class ConsumerViewComplaintComponent implements OnInit {
     this.complaintService.GetComplaint(complaintId).subscribe({
       next: (data) => {
         this.complaint = data;
+
         if (this.complaint.assignedToId) {
           this.staffService.GetStaffByStaffId(this.complaint.assignedToId).subscribe({
             next: staff => this.assignedStaff = staff,

@@ -14,5 +14,6 @@ namespace c2030270_saad.Data.Entities
         public DateTime CreatedAt { get; set; }
         
         public Role Role { get; set; }
+        public Tenant Tenant { get; set; }
     }
 }

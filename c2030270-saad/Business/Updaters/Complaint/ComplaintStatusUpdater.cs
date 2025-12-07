@@ -20,9 +20,9 @@ namespace c2030270_saad.Business.Updaters.Complaint
             this._createComplaintStatusHistoryQuery = createComplaintStatusHistoryQuery;
         }
 
-        public Complaint UpdateComplaintStatus(int complaintId, string newStatus, int changedById)
+        public Complaint UpdateComplaintStatus(int complaintId, int tenantId,  string newStatus, int changedById)
         {
-            var complaint = this.getComplaintByIdQuery.Execute(complaintId);
+            var complaint = this.getComplaintByIdQuery.Execute(complaintId,tenantId);
 
             if (complaint == null)
                 throw new Exception("Complaint not found.");

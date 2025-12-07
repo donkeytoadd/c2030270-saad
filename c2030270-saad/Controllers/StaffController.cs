@@ -31,7 +31,9 @@ namespace c2030270_saad.Controllers
             try
             {
                 logger.LogInformation($"Getting Staff with ID {staffId}");
-                var staff = this.staffGetter.GetStaffByStaffId(staffId);
+                int tenantId = int.Parse(User.FindFirst("tenantId")!.Value);
+                
+                var staff = this.staffGetter.GetStaffByStaffId(staffId, tenantId);
 
                 return Ok(staff);
             }

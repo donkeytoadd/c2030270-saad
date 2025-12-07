@@ -7,6 +7,7 @@ import {AuthGuard} from './guards/auth.guard';
 import {
   SupportPersonDashboardComponent
 } from './components/staff/support-person/support-person-dashboard/support-person-dashboard.component';
+import {CreateComplaintComponent} from './components/create-complaint/create-complaint.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -14,5 +15,6 @@ export const routes: Routes = [
   { path: 'consumer-dashboard', component: ConsumerDashboardComponent, canActivate: [AuthGuard] },
   {path: 'support-person-dashboard', component: SupportPersonDashboardComponent, canActivate: [AuthGuard] },
   { path: 'view-complaint/:complaintId', component: ConsumerViewComplaintComponent },
-  {path: 'view-all-complaints', component: ConsumerViewAllComplaintsComponent}
+  {path: 'view-all-complaints', component: ConsumerViewAllComplaintsComponent},
+  {path: 'create-complaint', component: CreateComplaintComponent },
 ];
