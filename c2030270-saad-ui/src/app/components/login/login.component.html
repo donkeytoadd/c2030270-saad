@@ -4,41 +4,47 @@
   </header>
 
   <div class="login-card">
+
     <h2 class="title">Sign Into Your Account</h2>
 
     @if (errorMessage) {
       <div class="error-box">{{ errorMessage }}</div>
     }
 
-    @if (step === 1) {
-      <label>Email Address</label>
-      <input type="email"
-             [(ngModel)]="email"
-             placeholder="Enter your email">
+    <label>Email Address</label>
+    <input type="email"
+           [(ngModel)]="email"
+           (ngModelChange)="onEmailChange()"
+           placeholder="Enter your email" />
 
-      @if (emailError) {
-        <p class="field-error">{{ emailError }}</p>
-      }
-
-      <button class="sign-btn" (click)="findTenants()">Continue</button>
+    @if (emailError) {
+      <p class="field-error">{{ emailError }}</p>
     }
 
-    @if (step === 2 && tenants.length > 0) {
+    <button class="sign-btn" (click)="findTenants()">Verify Email</button>
+
+
+    @if (tenants.length > 1) {
       <label>Select Organisation</label>
+
       <select [(ngModel)]="selectedTenantId">
-        <option [value]="null">Select</option>
+        <option [ngValue]="null">Select</option>
+
         @for (t of tenants; track t.tenantId) {
-          <option [value]="t.tenantId">
+          <option [ngValue]="t.tenantId">
             {{ t.tenantName }} ({{ t.role }})
           </option>
         }
       </select>
+    }
 
+    @if (canShowPassword()) {
       <label>Password</label>
+
       <div class="password-field">
         <input [type]="showPassword ? 'text' : 'password'"
                [(ngModel)]="password"
-               placeholder="Enter your password"/>
+               placeholder="Enter your password" />
 
         <button type="button" class="toggle-btn" (click)="togglePassword()">
           <i class="fa-solid" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
@@ -46,8 +52,6 @@
       </div>
 
       <button class="sign-btn" (click)="login()">Login</button>
-
-      <button class="back-btn" (click)="goBack()">Back</button>
     }
   </div>
 </div>

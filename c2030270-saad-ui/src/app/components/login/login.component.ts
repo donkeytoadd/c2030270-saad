@@ -12,18 +12,16 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  step: number = 1;
 
-  email: string = "";
-  password: string  = "";
-
-  emailError: string = "";
-  errorMessage: string = "";
-
+  email = "";
+  password = "";
   tenants: any[] = [];
-  selectedTenantId: number | null = null;
+  selectedTenantId: number;
 
-  showPassword: boolean = false;
+  isEmailVerified: boolean = false;
+  emailError = "";
+  errorMessage = "";
+  showPassword = false;
 
   constructor(private router: Router, private auth: AuthService) {}
 
@@ -36,19 +34,29 @@ export class LoginComponent {
     }
 
     this.auth.findTenants(this.email).subscribe({
-      next: (tenants) => {
+      next: tenants => {
         this.tenants = tenants;
-        this.step = 2;
+        this.isEmailVerified = true;
+
+        if (tenants.length === 1) {
+          this.selectedTenantId = tenants[0].tenantId;
+        }
       },
       error: () => {
         this.emailError = "No accounts found with this email.";
+        this.isEmailVerified = false;
       }
     });
   }
 
   login() {
-    if (!this.selectedTenantId) {
-      this.errorMessage = "Please select which organisation you want to log into.";
+    if (!this.isEmailVerified) {
+      this.errorMessage = "Please verify your email before logging in.";
+      return;
+    }
+
+    if (!this.canShowPassword) {
+      this.errorMessage = "Please select an organisation.";
       return;
     }
 
@@ -58,16 +66,10 @@ export class LoginComponent {
     }
 
     this.auth.login(this.email, this.password, this.selectedTenantId).subscribe({
-      next: res => {
-        if (res.role === "Consumer") {
-          this.router.navigate(['/consumer-dashboard']);
-        }
-        else if (res.role === "Staff") {
-          this.router.navigate(['/support-person-dashboard']);
-        }
-        else {
-          this.errorMessage = "Unknown role returned.";
-        }
+      next: data => {
+        if (data.role === "Consumer") this.router.navigate(['/consumer-dashboard']);
+        else if (data.role === "Staff") this.router.navigate(['/support-person-dashboard']);
+        else this.errorMessage = "Unknown role.";
       },
       error: () => {
         this.errorMessage = "Invalid password.";
@@ -75,13 +77,19 @@ export class LoginComponent {
     });
   }
 
-  togglePassword() {
-    this.showPassword = !this.showPassword;
-  }
-
-  goBack() {
-    this.step = 1;
+  onEmailChange() {
+    this.isEmailVerified = false;
+    this.tenants = [];
+    this.selectedTenantId = 0;
     this.password = "";
     this.errorMessage = "";
+  }
+
+  canShowPassword() {
+    return (this.tenants.length === 1 || (this.tenants.length > 1 && this.selectedTenantId));
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 }

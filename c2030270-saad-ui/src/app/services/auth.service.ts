@@ -14,11 +14,11 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   findTenants(email: string): Observable<any[]> {
-    return this.http.post<any[]>(`${this.baseUrl}/find-tenants`, { email });
+    return this.http.get<any[]>(`${this.baseUrl}/FindTenants`, {params: { email }});
   }
 
   login(email: string, password: string, tenantId: number): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.baseUrl}/login`, { email, password, tenantId }).pipe(
+    return this.http.post<LoginResponse>(`${this.baseUrl}/Login`, { email, password, tenantId }).pipe(
       tap(res => {
         localStorage.setItem('token', res.token);
         localStorage.setItem('refreshToken', res.refreshToken);
@@ -37,7 +37,7 @@ export class AuthService {
     const refreshToken = localStorage.getItem('refreshToken');
     if (!refreshToken) return throwError(() => new Error('No refresh token'));
 
-    return this.http.post<LoginResponse>(`${this.baseUrl}/refresh`, { refreshToken })
+    return this.http.post<LoginResponse>(`${this.baseUrl}/Refresh`, { refreshToken })
       .pipe(
         tap(res => {
           localStorage.setItem('token', res.token);

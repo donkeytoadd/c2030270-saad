@@ -37,9 +37,9 @@ namespace c2030270_saad.Controllers
             this.getRoleByRoleIdQuery = getRoleByRoleIdQuery;
         }
         
-        [HttpPost("find-tenants")]
+        [HttpGet("FindTenants")]
         [AllowAnonymous]
-        public IActionResult FindTenants([FromBody] TenantLookupRequest request)
+        public IActionResult FindTenants([FromQuery] TenantLookupRequest request)
         {
             if (string.IsNullOrWhiteSpace(request.Email))
                 return BadRequest("Email is required.");
@@ -75,7 +75,7 @@ namespace c2030270_saad.Controllers
             return Ok(tenants);
         }
         
-        [HttpPost("login")]
+        [HttpPost("Login")]
         [AllowAnonymous]
         public IActionResult Login([FromBody] LoginRequest request)
         {
@@ -155,7 +155,7 @@ namespace c2030270_saad.Controllers
             return Unauthorized("Account not found for this tenant.");
         }
         
-        [HttpPost("refresh")]
+        [HttpPost("Refresh")]
         [AllowAnonymous]
         public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
         {
