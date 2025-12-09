@@ -108,28 +108,37 @@ namespace c2030270_saad.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
-
+        
         [HttpPost("CreateComplaint")]
+        [Authorize]
         [Consumes("multipart/form-data")]
-        public async Task<ActionResult> CreateComplaint([FromBody] CreateComplaintRequest complaintRequest)
+        public async Task<IActionResult> CreateComplaint([FromForm] CreateComplaintRequest complaintRequest)
         {
             try
             {
                 if (!GetTenantId(out var tenantId) || !GetUserId(out var userId))
                     return Unauthorized("User or tenant identification missing.");
-                
+
                 logger.LogInformation($"Creating new complaint for ConsumerId: {complaintRequest.ConsumerId}");
                 var complaint = this.complaintCreator.CreateComplaint(complaintRequest, userId, tenantId);
 
+                if (complaintRequest.Files is { Count: > 0 })
+                {
+                    foreach (var file in complaintRequest.Files)
+                    {
+                        this.complaintCreator.SaveAttachment(complaint.ComplaintId, tenantId, file);
+                    }
+                }
+
                 return Ok(complaint);
-            }
+            } 
             catch (Exception ex)
             {
                 logger.LogError(ex, $"Error creating complaint for ConsumerId {complaintRequest.ConsumerId}");
                 return StatusCode(500, "Internal server error");
             }
         }
-
+        
         [HttpPost("UpdateComplaintStatus")]
         [Authorize]
         public async Task<ActionResult> UpdateComplaintStatus([FromBody] UpdateComplaintStatusRequest request)
@@ -150,6 +159,27 @@ namespace c2030270_saad.Controllers
             {
                 return StatusCode(500, $"Failed to update complaint status: {ex.Message}");
             }
+        }
+        
+        [HttpPost("UploadAttachment")]
+        [Authorize]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UploadAttachment([FromForm] UploadAttachmentRequest uploadAttachmentRequest)
+        {
+            if (uploadAttachmentRequest.File.Length == 0)
+                return BadRequest("File is required.");
+
+            var attachment = this.complaintCreator.SaveAttachment(uploadAttachmentRequest.ComplaintId, uploadAttachmentRequest.TenantId, uploadAttachmentRequest.File);
+
+            return Ok(attachment);
+        }
+        
+        [HttpGet("GetAttachments")]
+        [Authorize]
+        public async Task<ActionResult<List<ComplaintAttachment>>> GetAttachments(int complaintId)
+        {
+            var attachments = this.complaintGetter.GetAttachments(complaintId);
+            return Ok(attachments);
         }
     }
 }

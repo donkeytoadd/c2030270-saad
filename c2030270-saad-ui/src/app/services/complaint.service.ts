@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Complaint} from '../models/complaint.model'
 import {environment} from '../../environments/environment';
-import {CreateComplaint} from '../models/create-complaint.model';
+import {ComplaintAttachment} from '../models/complaint-attachment.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,11 @@ export class ComplaintService {
     return this.http.get<Complaint[]>(`${this.apiUrl}/GetComplaintsByConsumerId?consumerId=${consumerId}`);
   }
 
-  CreateComplaint(createComplaintRequest: CreateComplaint): Observable<CreateComplaint>{
-    return this.http.post<CreateComplaint>(`${this.apiUrl}/CreateComplaint`, createComplaintRequest)
+  CreateComplaint(formData: FormData): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/CreateComplaint`, formData);
+  }
+
+  GetAttachments(complaintId: number): Observable<ComplaintAttachment[]> {
+    return this.http.get<ComplaintAttachment[]>(`${this.apiUrl}/GetAttachments?complaintId=${complaintId}`);
   }
 }

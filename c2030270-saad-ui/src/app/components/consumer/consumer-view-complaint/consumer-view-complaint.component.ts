@@ -19,6 +19,7 @@ export class ConsumerViewComplaintComponent implements OnInit {
 
   complaint?: Complaint;
   assignedStaff?: Staff | null = null;
+  attachments: any[] = []
 
   tabs = ["Details", "Communication History", "Attachments", "Resolution"];
   selectedTab = "Details";
@@ -45,6 +46,10 @@ export class ConsumerViewComplaintComponent implements OnInit {
           });
         }
       }
+    });
+
+    this.complaintService.GetAttachments(complaintId).subscribe(files => {
+      this.attachments = files;
     });
   }
 

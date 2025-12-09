@@ -1,0 +1,130 @@
+<div class="layout">
+  <app-consumer-sidebar></app-consumer-sidebar>
+
+  <main class="content">
+    <h1>Create New Complaint</h1>
+
+    <div class="steps">
+      <div class="step" [class.active]="step === 1">1. Basic Info</div>
+      <div class="step" [class.active]="step === 2">2. Description</div>
+      <div class="step" [class.active]="step === 3">3. Upload Attachments</div>
+      <div class="step" [class.active]="step === 4">4. Review & Submit</div>
+    </div>
+
+    @if (step === 1){
+      <section class="form-card">
+        @if (isStaff){
+          <section class="staff-select">
+            <label>Select Consumer</label>
+
+            <input type="text"
+                   placeholder="Search consumers..."
+                   [(ngModel)]="searchTerm"
+                   (input)="searchConsumers()">
+            @if (showConsumerList){
+              <div class="dropdown" *ngIf="showConsumerList">
+                <div class="item"
+                     *ngFor="let c of consumerResults"
+                     (click)="selectConsumer(c)">
+                  {{ c.fName }} {{ c.lName }} — {{ c.email }}
+                </div>
+              </div>
+            }
+
+            @if (selectedConsumerName){
+              <p class="selected">Selected: <strong>{{ selectedConsumerName }}</strong></p>
+            }
+          </section>
+        }
+
+        <label>Complaint Title</label>
+        <input type="text" [(ngModel)]="createComplaintModel.title">
+        @if (titleError){
+          <p class="error">{{ titleError }}</p>
+        }
+
+        <label>Priority</label>
+        <select [(ngModel)]="createComplaintModel.priority">
+          <option value="">Select priority</option>
+          <option>Low</option>
+          <option>Medium</option>
+          <option>High</option>
+          <option>Urgent</option>
+        </select>
+        @if (priorityError){
+          <p class="error">{{ priorityError }}</p>
+        }
+
+        <button class="btn next" (click)="nextStep()">Next</button>
+      </section>
+    }
+
+    @if (step === 2) {
+      <section class="form-card">
+        <label>Complaint Description</label>
+        <textarea rows="6" [(ngModel)]="createComplaintModel.description"></textarea>
+        @if (descriptionError){
+          <p class="error">{{ descriptionError }}</p>
+        }
+
+        <button class="btn back" (click)="prevStep()">Back</button>
+        <button class="btn next" (click)="nextStep()">Next</button>
+      </section>
+    }
+
+    @if (step === 3) {
+      <section class="form-card">
+        <label>Upload Files (Optional)</label>
+        <input type="file" multiple (change)="onFilesSelected($event)">
+        @if (fileError){
+          <p class="error">{{ fileError }}</p>
+        }
+
+        @if (createComplaintModel.files.length > 0) {
+          <div class="file-list">
+            <h4>Selected Files:</h4>
+            <ul>
+              @for (file of createComplaintModel.files; let i = $index; track file.name) {
+                <li>
+                  {{ file.name }}
+                  <button class="remove-btn" (click)="removeFile(i)">✕</button>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+
+        <button class="btn back" (click)="prevStep()">Back</button>
+        <button class="btn next" (click)="nextStep()">Next</button>
+      </section>
+    }
+
+    @if (step === 4) {
+      <section class="form-card">
+        <h3>Review & Submit</h3>
+
+        <p><strong>Title:</strong> {{ createComplaintModel.title }}</p>
+        <p><strong>Priority:</strong> {{ createComplaintModel.priority }}</p>
+
+        <p><strong>Description:</strong></p>
+        <p class="desc">{{ createComplaintModel.description }}</p>
+
+        @if (createComplaintModel.files.length > 0) {
+          <div class="review-files">
+            <h3>Uploaded Files</h3>
+            <ul>
+              @for (file of selectedFiles; track file.name) {
+                <li>{{ file.name }}</li>
+              }
+            </ul>
+          </div>
+        }
+
+        <div class="actions">
+          <button class="btn" (click)="prevStep()">Back</button>
+          <button class="btn submit" (click)="submitComplaint()">Submit Complaint</button>
+        </div>
+      </section>
+    }
+  </main>
+</div>

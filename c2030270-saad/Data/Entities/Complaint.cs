@@ -13,5 +13,7 @@ namespace c2030270_saad.Data.Entities
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? ResolvedAt { get; set; }
+        
+        public List<ComplaintAttachment> ComplaintAttachments { get; set; }
     }
 }

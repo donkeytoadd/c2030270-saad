@@ -8,6 +8,7 @@ namespace c2030270_saad.Data.Entities
         public int AttachmentId { get; set; }
         public int ComplaintId { get; set; }
         public string FileName { get; set; }
+        public string OriginalName { get; set; }
         public string FilePath { get; set; }
         public DateTime UploadedAt { get; set; }
     }

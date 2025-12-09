@@ -116,6 +116,8 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
+app.UseStaticFiles();
+
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -18,6 +18,7 @@ namespace c2030270_saad.Data.Queries.Complaint
             using (var context = this.contextFactory.CreateDbContext())
             {
                 return context.Complaint
+                    .Include(x=>x.ComplaintAttachments)
                     .Where(x=>x.ConsumerId == consumerId && x.TenantId == tenantId)
                     .OrderByDescending(x=>x.CreatedAt)
                     .ToList();             

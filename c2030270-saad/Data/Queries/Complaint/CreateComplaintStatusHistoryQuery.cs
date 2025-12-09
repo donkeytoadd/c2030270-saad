@@ -19,6 +19,7 @@ namespace c2030270_saad.Data.Queries.Complaint
             {
 
                 context.ComplaintStatusHistory.Add(complaintStatusHistory);
+                context.SaveChanges();
                 return complaintStatusHistory;
             }
         }

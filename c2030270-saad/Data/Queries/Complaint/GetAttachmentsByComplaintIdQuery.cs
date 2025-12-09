@@ -4,22 +4,22 @@ namespace c2030270_saad.Data.Queries.Complaint
     using Interfaces;
     using Microsoft.EntityFrameworkCore;
 
-    public class GetComplaintsByTenantIdQuery : IGetAllComplaintsByTenantIdQuery
+    public class GetAttachmentsByComplaintIdQuery : IGetAttachmentsByComplaintIdQuery
     {
         private readonly IDbContextFactory<ApplicationDbContext> contextFactory;
 
-        public GetComplaintsByTenantIdQuery(IDbContextFactory<ApplicationDbContext> contextFactory)
+        public GetAttachmentsByComplaintIdQuery(IDbContextFactory<ApplicationDbContext> contextFactory)
         {
             this.contextFactory = contextFactory;
         }
         
-        public List<Complaint> Execute(int tenantId)
+        public List<ComplaintAttachment> Execute(int complaintId)
         {
             using (var context = this.contextFactory.CreateDbContext())
             {
-                return context.Complaint
-                    .Include(x=>x.ComplaintAttachments)
-                    .Where(x=>x.TenantId == tenantId).ToList();             
+                return context.ComplaintAttachment
+                    .Where(x => x.ComplaintId == complaintId)
+                    .ToList();
             }
         }
     }

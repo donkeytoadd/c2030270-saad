@@ -18,6 +18,7 @@ namespace c2030270_saad.Data.Queries.Complaint
             using (var context = this.contextFactory.CreateDbContext())
             { 
                 context.ComplaintAttachment.Add(complaintAttachment);
+                context.SaveChanges();
                 
                 return complaintAttachment;
             }
