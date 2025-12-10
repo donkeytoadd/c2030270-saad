@@ -15,7 +15,6 @@ import {AuthService} from '../../../services/auth.service';
   styleUrls: ['./consumer-view-all-complaints.component.scss']
 })
 export class ConsumerViewAllComplaintsComponent implements OnInit {
-  sidebarOpen: boolean = true;
   consumerId: number;
 
   complaints: Complaint[] = [];
@@ -35,10 +34,6 @@ export class ConsumerViewAllComplaintsComponent implements OnInit {
     this.consumerId = this.authService.getUserId();
 
     this.loadComplaints();
-  }
-
-  toggleSidebar(): void {
-    this.sidebarOpen = !this.sidebarOpen;
   }
 
   loadComplaints(): void {

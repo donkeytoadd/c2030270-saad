@@ -29,4 +29,17 @@ export class ComplaintService {
   GetAttachments(complaintId: number): Observable<ComplaintAttachment[]> {
     return this.http.get<ComplaintAttachment[]>(`${this.apiUrl}/GetAttachments?complaintId=${complaintId}`);
   }
+
+  UploadAttachment(complaintId: number, files: File[]) {
+    const formData = new FormData();
+    formData.append('complaintId', complaintId.toString());
+
+    files.forEach(f => formData.append('files', f));
+
+    return this.http.post(`${this.apiUrl}/UploadAttachment`, formData);
+  }
+
+  GetComplaintsByAssignedToId(): Observable<Complaint[]> {
+    return this.http.get<Complaint[]>(`${this.apiUrl}/GetComplaintsByAssignedToId`);
+  }
 }

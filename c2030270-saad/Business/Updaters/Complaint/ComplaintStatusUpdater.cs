@@ -8,7 +8,7 @@ namespace c2030270_saad.Business.Updaters.Complaint
     {
         private readonly IGetComplaintByIdQuery getComplaintByIdQuery;
         private readonly IUpdateComplaintStatusQuery updateComplaintStatusQuery;
-        private readonly ICreateComplaintStatusHistoryQuery _createComplaintStatusHistoryQuery;
+        private readonly ICreateComplaintStatusHistoryQuery createComplaintStatusHistoryQuery;
         
         public ComplaintStatusUpdater(
             IGetComplaintByIdQuery getComplaintByIdQuery,
@@ -17,7 +17,7 @@ namespace c2030270_saad.Business.Updaters.Complaint
         {
             this.getComplaintByIdQuery = getComplaintByIdQuery;
             this.updateComplaintStatusQuery = updateComplaintStatusQuery;
-            this._createComplaintStatusHistoryQuery = createComplaintStatusHistoryQuery;
+            this.createComplaintStatusHistoryQuery = createComplaintStatusHistoryQuery;
         }
 
         public Complaint UpdateComplaintStatus(int complaintId, int tenantId,  string newStatus, int changedById)
@@ -37,9 +37,10 @@ namespace c2030270_saad.Business.Updaters.Complaint
                 
             };
 
-            this._createComplaintStatusHistoryQuery.Execute(complaintStatusHistory);
+            var updatedComplaint = this.updateComplaintStatusQuery.Execute(complaint, newStatus);
+            this.createComplaintStatusHistoryQuery.Execute(complaintStatusHistory);
 
-            return this.updateComplaintStatusQuery.Execute(complaint, newStatus);
+            return updatedComplaint;
         }
     }
 }

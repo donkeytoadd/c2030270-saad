@@ -151,7 +151,7 @@ namespace c2030270_saad.Controllers
                 if (!GetTenantId(out var tenantId) || !GetUserId(out var userId))
                     return Unauthorized("User or tenant identification missing.");
                 
-                var updatedComplaint = complaintStatusUpdater.UpdateComplaintStatus(request.ComplaintId, tenantId, request.NewStatus, userId);
+                var updatedComplaint = this.complaintStatusUpdater.UpdateComplaintStatus(request.ComplaintId, tenantId, request.NewStatus, userId);
 
                 return Ok(updatedComplaint);
             }
@@ -180,6 +180,17 @@ namespace c2030270_saad.Controllers
         {
             var attachments = this.complaintGetter.GetAttachments(complaintId);
             return Ok(attachments);
+        }
+        
+        [HttpGet("GetComplaintsByAssignedToId")]
+        [Authorize]
+        public IActionResult GetComplaintsByAssignedToId()
+        {
+            if (!GetTenantId(out var tenantId) || !GetUserId(out var userId))
+                return Unauthorized("User or tenant identification missing.");
+
+            var complaintList = this.complaintGetter.GetComplaintsByAssignedToId(userId, tenantId);
+            return Ok(complaintList);
         }
     }
 }

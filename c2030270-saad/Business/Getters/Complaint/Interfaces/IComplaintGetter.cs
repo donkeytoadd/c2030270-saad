@@ -8,5 +8,6 @@ namespace c2030270_saad.Business.Getters.Complaint.Interfaces
         List<Complaint> GetComplaintsByConsumerId(int consumerId, int tenantId);
         List<Complaint> GetComplaintsByTenantId(int tenantId);
         List<ComplaintAttachment> GetAttachments(int complaintId);
+        List<Complaint> GetComplaintsByAssignedToId(int assignedToId, int tenantId);
     }
 }

@@ -1,4 +1,73 @@
-<div class="support-wrapper">
-  <h1>Support Dashboard</h1>
-  <p>You are logged in as Support Staff.</p>
+<div class="layout">
+  <app-support-person-sidebar></app-support-person-sidebar>
+
+  <div class="content">
+    <div class="topbar">
+      <h1>Support Dashboard</h1>
+      <button class="icon-btn">
+        <i class="fa-solid fa-bell"></i>
+      </button>
+    </div>
+
+    <div class="welcome">
+      <h1>Welcome, {{ staff.fName }}</h1>
+    </div>
+
+    <div class="summary-cards">
+      <div class="card">
+        <h2>{{ assignedCount }}</h2>
+        <p>Assigned Complaints</p>
+      </div>
+
+      <div class="card">
+        <h2>{{ inProgressCount }}</h2>
+        <p>In Progress</p>
+      </div>
+
+      <div class="card">
+        <h2>{{ resolvedCount }}</h2>
+        <p>Resolved</p>
+      </div>
+    </div>
+
+    <div class="recent-section">
+      <h2>Complaints Assigned to You</h2>
+
+      <table class="complaints-table">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Priority</th>
+          <th>Created</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+          @for (c of complaints.slice(0,5); track c.complaintId) {
+            <tr>
+              <td>#C-{{ c.createdAt | date:'yyyy' }}-{{ c.complaintId }}</td>
+              <td>{{ c.title }}</td>
+              <td>{{ c.status }}</td>
+              <td>{{ c.priority }}</td>
+              <td>{{ c.createdAt | date:'MMM d, yyyy' }}</td>
+
+              <td class="actions">
+                <button class="view-btn" [routerLink]="['/support-person-view-complaint', c.complaintId]">View</button>
+                <button class="ellipsis">⋮</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6" class="text-center">
+                No complaints assigned to this account.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

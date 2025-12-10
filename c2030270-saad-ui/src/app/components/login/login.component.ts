@@ -68,7 +68,7 @@ export class LoginComponent {
     this.auth.login(this.email, this.password, this.selectedTenantId).subscribe({
       next: data => {
         if (data.role === "Consumer") this.router.navigate(['/consumer-dashboard']);
-        else if (data.role === "Staff") this.router.navigate(['/support-person-dashboard']);
+        else if (data.role === "SupportPerson") this.router.navigate(['/support-person-dashboard']);
         else this.errorMessage = "Unknown role.";
       },
       error: () => {

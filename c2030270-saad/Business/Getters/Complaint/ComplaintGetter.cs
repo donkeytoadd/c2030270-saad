@@ -10,17 +10,20 @@ namespace c2030270_saad.Business.Getters.Complaint
         private readonly IGetAllComplaintsByConsumerIdQuery getAllComplaintsByConsumerIdQuery;
         private readonly IGetAllComplaintsByTenantIdQuery getAllComplaintsByTenantIdQuery;
         private readonly IGetAttachmentsByComplaintIdQuery getAttachmentsByComplaintIdQuery;
+        private readonly IGetComplaintsByAssignedToIdQuery getComplaintsByAssignedToIdQuery;
         
         public ComplaintGetter(
             IGetComplaintByIdQuery getComplaintByIdQuery,
             IGetAllComplaintsByConsumerIdQuery getAllComplaintsByConsumerIdQuery,
             IGetAllComplaintsByTenantIdQuery  getAllComplaintsByTenantIdQuery,
-            IGetAttachmentsByComplaintIdQuery getAttachmentsByComplaintIdQuery)
+            IGetAttachmentsByComplaintIdQuery getAttachmentsByComplaintIdQuery,
+            IGetComplaintsByAssignedToIdQuery getComplaintsByAssignedToIdQuery)
         {
             this.getComplaintByIdQuery = getComplaintByIdQuery;
             this.getAllComplaintsByConsumerIdQuery = getAllComplaintsByConsumerIdQuery;
             this.getAllComplaintsByTenantIdQuery =  getAllComplaintsByTenantIdQuery;
             this.getAttachmentsByComplaintIdQuery = getAttachmentsByComplaintIdQuery;
+            this.getComplaintsByAssignedToIdQuery = getComplaintsByAssignedToIdQuery;
         }
         
         public Complaint GetComplaint(int complaintId, int tenantId)
@@ -46,6 +49,12 @@ namespace c2030270_saad.Business.Getters.Complaint
         {
             var attachmentList = this.getAttachmentsByComplaintIdQuery.Execute(complaintId);
             return attachmentList;
+        }
+
+        public List<Complaint> GetComplaintsByAssignedToId(int assignedToId, int tenantId)
+        {
+            var complaintList = this.getComplaintsByAssignedToIdQuery.Execute(assignedToId, tenantId);
+            return complaintList;
         }
     }
 }

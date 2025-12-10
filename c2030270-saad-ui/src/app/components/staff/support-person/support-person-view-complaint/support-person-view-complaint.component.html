@@ -1,0 +1,124 @@
+<div class="layout">
+
+  <app-support-person-sidebar></app-support-person-sidebar>
+
+  <main class="content">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div></div>
+      <div class="topbar-icons">
+        <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
+        <button class="icon-btn"><i class="fa-solid fa-user"></i></button>
+      </div>
+    </header>
+
+    <!-- HEADER -->
+    <section class="header-row">
+      <div>
+        <h1 class="title">{{ complaint?.title }}</h1>
+        <p class="meta">
+          Complaint ID:
+          <strong>#C-{{ complaint?.createdAt | date:'yyyy' }}-{{ complaint?.complaintId }}</strong>
+        </p>
+      </div>
+    </section>
+
+    <!-- ACTION ROW -->
+    <div class="action-row">
+      <button class="btn small" (click)="goBack()">← Back</button>
+    </div>
+
+    <!-- BODY -->
+    <div class="content-container">
+
+      <!-- MAIN PANEL -->
+      <section class="main-panel">
+
+        <nav class="tabs">
+          @for (t of tabs; track t) {
+            <button [class.active]="selectedTab === t" (click)="selectTab(t)">
+              {{ t }}
+            </button>
+          }
+        </nav>
+
+        <div class="panel-body">
+
+          <!-- DETAILS TAB -->
+          @if (selectedTab === 'Details') {
+
+            <h3 class="section-title">Complaint Summary</h3>
+
+            <div class="info-grid">
+              <p><strong>Status:</strong> {{ complaint?.status }}</p>
+              <p><strong>Priority:</strong> {{ complaint?.priority }}</p>
+              <p><strong>Submitted:</strong> {{ complaint?.createdAt | date:'MMM d, yyyy' }}</p>
+              <p><strong>Last Updated:</strong> {{ complaint?.updatedAt | date:'MMM d, yyyy' }}</p>
+              <p><strong>Consumer:</strong> {{ complaint?.consumerName }}</p>
+            </div>
+
+            <h3 class="section-title">Description</h3>
+            <p class="description">{{ complaint?.description }}</p>
+
+          }
+
+          @else if(selectedTab === 'Attachments') {
+            <section class="attachments">
+              <h3>Uploaded Files</h3>
+
+              @if (complaint?.attachments?.length > 0) {
+                <ul>
+                  @for (a of complaint.attachments; track a.attachmentId) {
+                    <li>
+                      <a [href]="'http://localhost:5122/' + a.filePath" target="_blank">
+                        {{ a.fileName }}
+                      </a>
+                    </li>
+                  }
+                </ul>
+              }
+              @else {
+                <p>No attachments uploaded yet.</p>
+              }
+
+              <h4>Upload Additional Evidence</h4>
+              <input type="file" multiple (change)="selectFiles($event)" />
+
+              <div class="actions">
+                <button class="btn" (click)="uploadAttachments()">Upload Files</button>
+              </div>
+            </section>
+          }
+
+          @else if (selectedTab === 'Update Status') {
+
+            <section>
+              <h3 class="section-title">Update Complaint Status</h3>
+
+              <label>Status</label>
+              <select>
+                <option value="In Progress">In Progress</option>
+                <option value="Awaiting Consumer">Awaiting Consumer</option>
+                <option value="Resolved">Resolved</option>
+              </select>
+
+              <label>Resolution Notes</label>
+              <textarea></textarea>
+
+              <div class="actions">
+                <button class="btn submit">Save Changes</button>
+              </div>
+            </section>
+
+          }
+
+          @else {
+            <p class="placeholder">Content for "{{ selectedTab }}" will appear here.</p>
+          }
+
+        </div>
+      </section>
+    </div>
+  </main>
+</div>

@@ -3,14 +3,14 @@ import {CommonModule} from '@angular/common';
 import {Router, RouterLink, RouterModule} from '@angular/router';
 
 @Component({
-  selector: 'app-consumer-sidebar',
+  selector: 'app-support-person-sidebar',
   standalone: true,
   imports: [CommonModule, RouterLink, RouterModule],
-  templateUrl: './consumer-sidebar.component.html',
-  styleUrls: ['./consumer-sidebar.component.scss']
+  templateUrl: './support-person-sidebar.component.html',
+  styleUrls: ['./support-person-sidebar.component.scss']
 })
 
-export class ConsumerSidebarComponent{
+export class SupportPersonSidebarComponent{
   sidebarOpen: boolean = true;
 
   constructor(private router: Router) {
