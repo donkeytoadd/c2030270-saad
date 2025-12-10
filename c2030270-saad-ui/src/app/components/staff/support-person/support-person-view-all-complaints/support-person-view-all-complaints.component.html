@@ -1,5 +1,5 @@
 <div class="layout">
-  <app-consumer-sidebar></app-consumer-sidebar>
+  <app-support-person-sidebar></app-support-person-sidebar>
 
   <main class="content">
     <header class="topbar">
@@ -11,8 +11,16 @@
     </header>
 
     <section class="page-title">
-      <h1>All Complaints</h1>
-      <p>View, filter, and track all complaint submissions.</p>
+      @if (!loading) {
+        <div>
+          <h1>Assigned Complaints</h1>
+          <p>Review and manage all complaints assigned to you.</p>
+        </div>
+      }
+      @else {
+        <div class="skeleton skeleton-text title"></div>
+        <div class="skeleton skeleton-text short"></div>
+      }
     </section>
 
     <section class="filters-row">
@@ -41,12 +49,12 @@
       </select>
     </section>
 
-    @if (loading) {
-      <app-skeleton-table [rows]="10" [columns]="6" rowHeight="18px"></app-skeleton-table>
-    }
+    <section class="complaints-table-section">
+      @if (loading) {
+        <app-skeleton-table [rows]="10" [columns]="6" rowHeight="18px"></app-skeleton-table>
+      }
 
-    @else{
-      <section class="complaints-table-section">
+      @else {
         <table class="complaints-table">
           <thead>
           <tr>
@@ -69,7 +77,7 @@
                 <td>{{ c.createdAt | date:'MMM d, yyyy' }}</td>
 
                 <td class="actions">
-                  <button class="view-btn" [routerLink]="['/view-complaint', c.complaintId]">View</button>
+                  <button class="view-btn" [routerLink]="['/support-person-view-complaint', c.complaintId]">View</button>
                 </td>
               </tr>
             }
@@ -81,23 +89,23 @@
             }
           </tbody>
         </table>
+      }
+    </section>
 
-        @if (!loading && totalPages > 1 ) {
-        <div class="pagination">
-          <button class="page-btn" (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
+    @if (!loading && totalPages > 1) {
+      <div class="pagination">
+        <button class="page-btn" (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
 
-          @for (p of totalPagesArray; track p) {
-            <button class="page-btn"
-              [class.active]="p === currentPage"
-              (click)="goToPage(p)">
-              {{ p }}
-            </button>
-          }
-
-          <button class="page-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
-        </div>
+        @for (p of totalPagesArray; track p) {
+          <button class="page-btn"
+                  [class.active]="p === currentPage"
+                  (click)="goToPage(p)">
+            {{ p }}
+          </button>
         }
-      </section>
+
+        <button class="page-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+      </div>
     }
   </main>
 </div>
