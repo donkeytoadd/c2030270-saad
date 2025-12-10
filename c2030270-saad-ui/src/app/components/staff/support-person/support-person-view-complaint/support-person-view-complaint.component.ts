@@ -5,34 +5,38 @@ import { AuthService } from '../../../../services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { SupportPersonSidebarComponent } from '../support-person-sidebar/support-person-sidebar.component';
 import {DatePipe} from '@angular/common';
+import {Complaint} from '../../../../models/complaint.model';
+import {
+  SkeletonViewComplaintComponent
+} from '../../../skeleton-fields/skeleton-view-complaint/skeleton-view-complaint.component';
 
 @Component({
   selector: 'app-support-person-view-complaint',
   standalone: true,
   templateUrl: './support-person-view-complaint.component.html',
-  imports: [FormsModule, SupportPersonSidebarComponent, DatePipe],
+  imports: [FormsModule, SupportPersonSidebarComponent, DatePipe, SkeletonViewComplaintComponent],
   styleUrls: ['./support-person-view-complaint.component.scss']
 })
 export class SupportPersonViewComplaintComponent implements OnInit {
-
   complaintId!: number;
-  complaint: any;
+  complaint: Complaint;
+  attachments: any[] = []
 
   tabs: string[] = ['Details', 'Communication History', 'Attachments', 'Update Status'];
   selectedTab: string = 'Details';
 
   selectedFiles: File[] = [];
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private complaintService: ComplaintService,
-    private auth: AuthService
-  ) {}
+  loading: boolean = true;
+
+  constructor(private route: ActivatedRoute, private router: Router, private complaintService: ComplaintService, private auth: AuthService) {}
 
   ngOnInit(): void {
     this.complaintId = Number(this.route.snapshot.paramMap.get("complaintId"));
-    this.loadComplaint();
+
+    setTimeout(() => {
+      this.loadComplaint();
+    }, 600);
   }
 
   goBack() {
@@ -47,10 +51,12 @@ export class SupportPersonViewComplaintComponent implements OnInit {
     this.complaintService.GetComplaint(this.complaintId).subscribe({
       next: (data) => {
         this.complaint = data;
+        this.loading = false;
       },
-      error: (err) => {
-        console.error("Error loading complaint", err);
+      error: (error) => {
+        console.error("Error loading complaint", error);
         alert("Failed to load complaint.");
+        this.loading = false;
       }
     });
   }

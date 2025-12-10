@@ -1,0 +1,27 @@
+.skeleton-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  td {
+    padding: 10px 12px;
+  }
+
+  .skeleton {
+    width: 100%;
+    border-radius: 6px;
+
+    background: linear-gradient(
+        90deg,
+        #e0e0e0 0%,
+        #f4f4f4 50%,
+        #e0e0e0 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

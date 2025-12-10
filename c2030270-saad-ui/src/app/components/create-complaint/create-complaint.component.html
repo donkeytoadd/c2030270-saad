@@ -1,5 +1,9 @@
 <div class="layout">
-  <app-consumer-sidebar></app-consumer-sidebar>
+  @if (!isStaff) {
+    <app-consumer-sidebar></app-consumer-sidebar>
+  } @else {
+    <app-support-person-sidebar></app-support-person-sidebar>
+  }
 
   <main class="content">
     <h1>Create New Complaint</h1>
@@ -22,12 +26,10 @@
                    [(ngModel)]="searchTerm"
                    (input)="searchConsumers()">
             @if (showConsumerList){
-              <div class="dropdown" *ngIf="showConsumerList">
-                <div class="item"
-                     *ngFor="let c of consumerResults"
-                     (click)="selectConsumer(c)">
-                  {{ c.fName }} {{ c.lName }} — {{ c.email }}
-                </div>
+              <div class="dropdown">
+                @for (c of consumerResults; track c.id) {
+                  <div class="item" (click)="selectConsumer(c)"> {{ c.fName }} {{ c.lName }} — {{ c.email }}</div>
+                }
               </div>
             }
 

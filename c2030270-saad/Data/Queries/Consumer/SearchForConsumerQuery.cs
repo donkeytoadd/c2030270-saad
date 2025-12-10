@@ -13,17 +13,18 @@ namespace c2030270_saad.Data.Queries.Consumer
             contextFactory = factory;
         }
 
-        public List<SearchConsumerResult> Execute(string query)
+        public List<SearchConsumerResult> Execute(string query, int tenantId)
         {
             using (var context = contextFactory.CreateDbContext())
             {
                 query = query.ToLower().Trim();
 
                 return context.Consumer
-                    .Where(c =>
-                        c.FName.ToLower().Contains(query) ||
-                        c.LName.ToLower().Contains(query) ||
-                        c.Email.ToLower().Contains(query))
+                    .Where(c => c.TenantId == tenantId && 
+                                (c.FName.ToLower().Contains(query) || 
+                                 c.LName.ToLower().Contains(query) || 
+                                 c.Email.ToLower().Contains(query))
+                    )
                     .Select(c => new SearchConsumerResult
                     {
                         ConsumerId = c.ConsumerId,

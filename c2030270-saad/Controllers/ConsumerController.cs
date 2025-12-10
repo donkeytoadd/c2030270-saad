@@ -82,12 +82,12 @@ namespace c2030270_saad.Controllers
         }
         
         [HttpGet("search")]
-        public ActionResult<List<SearchConsumerResult>> SearchConsumers([FromQuery] string query)
+        public ActionResult<List<SearchConsumerResult>> SearchConsumers([FromQuery] string query, int tenantId)
         {
             if (string.IsNullOrWhiteSpace(query))
                 return Ok(new List<SearchConsumerResult>());
 
-            var results = this.searchForConsumerQuery.Execute(query);
+            var results = this.searchForConsumerQuery.Execute(query, tenantId);
 
             return Ok(results);
         }

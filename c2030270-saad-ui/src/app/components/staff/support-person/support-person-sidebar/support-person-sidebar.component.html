@@ -14,7 +14,7 @@
       }
     </a>
 
-    <a routerLink="/view-all-complaints" routerLinkActive="active">
+    <a routerLink="/placeholder" routerLinkActive="active">
       <i class="fas fa-list" title="View My Complaints"></i>
       @if (sidebarOpen) {
         <span>My Assigned Complaints</span>
@@ -35,10 +35,12 @@
       }
     </a>
 
-    <button class="logout-btn" (click)="logout()">
-      <i class="fas fa-sign-out-alt"></i>
-      <span *ngIf="sidebarOpen">Logout</span>
-    </button>
+    <a routerLink="/login" routerLinkActive="active" (click)="logout()">
+      <i class="fas fa-sign-out-alt" title="Logout"></i>
+      @if (sidebarOpen) {
+        <span>Logout</span>
+      }
+    </a>
   </nav>
 
   <button class="sidebar-toggle" (click)="toggleSidebar()">

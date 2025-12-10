@@ -4,7 +4,6 @@
   <main class="content">
     <header class="topbar">
       <div></div>
-
       <div class="topbar-icons">
         <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
         <button class="icon-btn"><i class="fa-solid fa-user"></i></button>
@@ -16,10 +15,8 @@
       <p>View, filter, and track all complaint submissions.</p>
     </section>
 
-
     <section class="filters-row">
-      <input
-        class="search-box"
+      <input class="search-box"
         type="text"
         placeholder="Search complaints..."
         [(ngModel)]="searchTerm"
@@ -27,13 +24,13 @@
       />
 
       <select [(ngModel)]="statusFilter" (change)="applyFilters()">
-        @for (s of statuses; track s){
+        @for (s of statuses; track s) {
           <option [value]="s">{{ s }}</option>
         }
       </select>
 
       <select [(ngModel)]="priorityFilter" (change)="applyFilters()">
-        @for (p of priorities; track p){
+        @for (p of priorities; track p) {
           <option [value]="p">{{ p }}</option>
         }
       </select>
@@ -42,44 +39,63 @@
         <option value="newest">Newest First</option>
         <option value="oldest">Oldest First</option>
       </select>
-
     </section>
 
-    <section class="complaints-table-section">
-      <table class="complaints-table">
-        <thead>
-        <tr>
-          <th>ID</th>
-          <th>Subject</th>
-          <th>Status</th>
-          <th>Priority</th>
-          <th>Date Created</th>
-          <th>Actions</th>
-        </tr>
-        </thead>
+    @if (loading) {
+      <app-skeleton-table [rows]="10" [columns]="6" rowHeight="18px"></app-skeleton-table>
+    }
 
-        <tbody>
-          @for (c of filteredComplaints; track c){
-            <tr>
-              <td>#C-{{ c.createdAt | date:'yyyy' }}-{{ c.complaintId }}</td>
-              <td>{{ c.title }}</td>
-              <td>{{ c.status }}</td>
-              <td>{{ c.priority }}</td>
-              <td>{{ c.createdAt | date:'MMM d, yyyy' }}</td>
+    @else{
+      <section class="complaints-table-section">
+        <table class="complaints-table">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Subject</th>
+            <th>Status</th>
+            <th>Priority</th>
+            <th>Date Created</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
 
-              <td class="actions">
-                <button class="view-btn" [routerLink]="['/view-complaint', c.complaintId]">View</button>
-              </td>
-            </tr>
+          <tbody>
+            @for (c of pagedComplaints; track c.complaintId) {
+              <tr>
+                <td>#C-{{ c.createdAt | date:'yyyy' }}-{{ c.complaintId }}</td>
+                <td>{{ c.title }}</td>
+                <td>{{ c.status }}</td>
+                <td>{{ c.priority }}</td>
+                <td>{{ c.createdAt | date:'MMM d, yyyy' }}</td>
+
+                <td class="actions">
+                  <button class="view-btn" [routerLink]="['/view-complaint', c.complaintId]">View</button>
+                </td>
+              </tr>
+            }
+
+            @if (pagedComplaints.length === 0) {
+              <tr>
+                <td colspan="6" class="no-results">No complaints match your filters.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+
+        <div class="pagination" *ngIf="totalPages > 1">
+          <button class="page-btn" (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
+
+          @for (p of totalPagesArray; track p) {
+            <button class="page-btn"
+              [class.active]="p === currentPage"
+              (click)="goToPage(p)">
+              {{ p }}
+            </button>
           }
 
-          @if (filteredComplaints.length === 0){
-            <tr>
-              <td colspan="6" class="no-results">No complaints match your filters.</td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </section>
+          <button class="page-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+        </div>
+      </section>
+    }
   </main>
 </div>

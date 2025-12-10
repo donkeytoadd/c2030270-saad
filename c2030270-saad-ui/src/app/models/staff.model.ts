@@ -5,7 +5,7 @@ export interface Staff {
     fName: string;
     lName: string;
     email: string;
-    phone: string;
+    contactNumber: string;
     roleName: string;
     role?: Role;
 }

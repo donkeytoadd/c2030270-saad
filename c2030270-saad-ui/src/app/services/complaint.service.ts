@@ -42,4 +42,8 @@ export class ComplaintService {
   GetComplaintsByAssignedToId(): Observable<Complaint[]> {
     return this.http.get<Complaint[]>(`${this.apiUrl}/GetComplaintsByAssignedToId`);
   }
+
+  UpdateComplaintStatus(complaintId: number, newStatus: string) {
+    return this.http.post(`${this.apiUrl}/UpdateComplaintStatus`, { complaintId, newStatus });
+  }
 }

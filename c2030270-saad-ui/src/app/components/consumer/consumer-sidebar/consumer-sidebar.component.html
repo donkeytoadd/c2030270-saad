@@ -35,10 +35,12 @@
       }
     </a>
 
-    <button class="logout-btn" (click)="logout()">
-      <i class="fas fa-sign-out-alt"></i>
-      <span *ngIf="sidebarOpen">Logout</span>
-    </button>
+    <a routerLink="/login" routerLinkActive="active" (click)="logout()">
+      <i class="fas fa-sign-out-alt" title="Logout"></i>
+      @if (sidebarOpen) {
+        <span>Logout</span>
+      }
+    </a>
   </nav>
 
   <button class="sidebar-toggle" (click)="toggleSidebar()">

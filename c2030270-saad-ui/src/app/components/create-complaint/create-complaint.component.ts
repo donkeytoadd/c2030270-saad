@@ -7,16 +7,18 @@ import { ConsumerService } from '../../services/consumer.service';
 import { ConsumerSidebarComponent } from '../consumer/consumer-sidebar/consumer-sidebar.component';
 import { Router } from '@angular/router';
 import {CreateComplaint} from '../../models/create-complaint.model';
+import {
+  SupportPersonSidebarComponent
+} from '../staff/support-person/support-person-sidebar/support-person-sidebar.component';
 
 @Component({
   selector: 'app-create-complaint',
   standalone: true,
-  imports: [CommonModule, FormsModule, ConsumerSidebarComponent],
+  imports: [CommonModule, FormsModule, ConsumerSidebarComponent, SupportPersonSidebarComponent],
   templateUrl: './create-complaint.component.html',
   styleUrls: ['./create-complaint.component.scss']
 })
 export class CreateComplaintComponent implements OnInit {
-
   step = 1;
 
   createComplaintModel: CreateComplaint = {
@@ -42,12 +44,7 @@ export class CreateComplaintComponent implements OnInit {
 
   selectedFiles: File[] = [];
 
-  constructor(
-    private complaintService: ComplaintService,
-    private auth: AuthService,
-    private consumerService: ConsumerService,
-    private router: Router,
-  ) {}
+  constructor(private complaintService: ComplaintService, private auth: AuthService, private consumerService: ConsumerService, private router: Router,) {}
 
   ngOnInit(): void {
     const role = this.auth.getRole();

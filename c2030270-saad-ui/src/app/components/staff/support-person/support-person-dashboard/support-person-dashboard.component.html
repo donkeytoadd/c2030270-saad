@@ -9,30 +9,44 @@
       </button>
     </div>
 
-    <div class="welcome">
-      <h1>Welcome, {{ staff.fName }}</h1>
-    </div>
+    <section class="welcome">
+      @if (loading) {
+        <app-skeleton-header></app-skeleton-header>
+      }
+      @else {
+        <h1>Welcome back, {{ staff.fName }}!</h1>
+        <p>Here’s an overview of your recent activity</p>
+      }
+    </section>
 
-    <div class="summary-cards">
-      <div class="card">
-        <h2>{{ assignedCount }}</h2>
-        <p>Assigned Complaints</p>
-      </div>
-
-      <div class="card">
-        <h2>{{ inProgressCount }}</h2>
-        <p>In Progress</p>
-      </div>
-
-      <div class="card">
-        <h2>{{ resolvedCount }}</h2>
-        <p>Resolved</p>
-      </div>
-    </div>
+    <section class="summary-cards">
+      @if (loadingCards) {
+        <app-skeleton-cards [count]="3"></app-skeleton-cards>
+      }
+      @else {
+        <div class="card">
+          <h2>{{ assignedCount }}</h2>
+          <p>Assigned Complaints</p>
+        </div>
+        <div class="card">
+          <h2>{{ inProgressCount }}</h2>
+          <p>In Progress</p>
+        </div>
+        <div class="card">
+          <h2>{{ resolvedCount }}</h2>
+          <p>Resolved</p>
+        </div>
+      }
+    </section>
 
     <div class="recent-section">
       <h2>Complaints Assigned to You</h2>
 
+      @if (loadingTable) {
+        <app-skeleton-table [rows]="5" [columns]="6" rowHeight="18px"></app-skeleton-table>
+      }
+
+      @else {
       <table class="complaints-table">
         <thead>
         <tr>
@@ -68,6 +82,7 @@
           }
         </tbody>
       </table>
+      }
     </div>
   </div>
 </div>

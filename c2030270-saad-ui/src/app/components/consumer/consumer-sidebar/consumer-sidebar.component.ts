@@ -26,7 +26,5 @@ export class ConsumerSidebarComponent{
     localStorage.removeItem("userId");
     localStorage.removeItem("role");
     localStorage.removeItem("tenantId");
-
-    this.router.navigate(['/login']);
   }
 }

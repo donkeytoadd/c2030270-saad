@@ -1,0 +1,13 @@
+<table class="skeleton-table">
+  <tbody>
+    @for (row of [].constructor(rows); track row) {
+      <tr>
+        @for (col of [].constructor(columns); track col) {
+          <td>
+            <div class="skeleton" [style.height]="rowHeight"></div>
+          </td>
+        }
+      </tr>
+    }
+  </tbody>
+</table>

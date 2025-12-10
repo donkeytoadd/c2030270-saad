@@ -1,0 +1,103 @@
+.skeleton-layout {
+  padding: 20px;
+}
+
+.skeleton {
+  background: #e3e3e3;
+  border-radius: 6px;
+  animation: pulse 1.4s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { opacity: .6; }
+  50% { opacity: 1; }
+  100% { opacity: .6; }
+}
+
+.header-row {
+  margin-bottom: 20px;
+
+  .title {
+    height: 28px;
+    width: 40%;
+    margin-bottom: 8px;
+  }
+
+  .short {
+    height: 16px;
+    width: 25%;
+  }
+}
+
+.action-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+
+  .skeleton-button {
+    height: 32px;
+    width: 110px;
+    border-radius: 6px;
+  }
+}
+
+.tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+
+  .skeleton-tab {
+    height: 34px;
+    width: 100px;
+    border-radius: 20px;
+  }
+}
+
+.content-container {
+  display: flex;
+  gap: 25px;
+}
+
+.main-panel {
+  flex: 3;
+
+  .panel-body {
+
+    .skeleton-box {
+      height: 160px;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    .skeleton-text {
+      height: 16px;
+      width: 70%;
+      margin: 8px 0;
+    }
+
+    .short {
+      width: 40%;
+    }
+  }
+}
+
+.staff-card-skeleton {
+  flex: 1;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  height: 200px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+  .skeleton-text {
+    height: 16px;
+    width: 80%;
+    margin-bottom: 10px;
+  }
+
+  .small {
+    height: 60px;
+    width: 100%;
+    margin-top: 10px;
+  }
+}
