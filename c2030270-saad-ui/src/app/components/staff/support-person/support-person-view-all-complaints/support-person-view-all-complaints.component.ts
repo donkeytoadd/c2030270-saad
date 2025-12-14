@@ -1,25 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ComplaintService } from '../../../../services/complaint.service';
-import { AuthService } from '../../../../services/auth.service';
 import { Complaint } from '../../../../models/complaint.model';
 import {FormsModule} from '@angular/forms';
 import {SkeletonTableComponent} from '../../../skeleton-fields/skeleton-table/skeleton-table.component';
 import {SupportPersonSidebarComponent} from '../support-person-sidebar/support-person-sidebar.component';
-import {DatePipe, NgIf} from '@angular/common';
+import {DatePipe} from '@angular/common';
 import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-support-person-view-all-complaints',
   standalone: true,
   templateUrl: './support-person-view-all-complaints.component.html',
-  imports: [
-    FormsModule,
-    SkeletonTableComponent,
-    SupportPersonSidebarComponent,
-    DatePipe,
-    RouterLink,
-    NgIf
-  ],
+  imports: [FormsModule, SkeletonTableComponent, SupportPersonSidebarComponent, DatePipe, RouterLink],
   styleUrls: ['./support-person-view-all-complaints.component.scss']
 })
 export class SupportPersonViewAllComplaintsComponent implements OnInit {
@@ -36,14 +28,14 @@ export class SupportPersonViewAllComplaintsComponent implements OnInit {
   sortDirection = 'newest';
 
   statuses = ['All', 'Open', 'In Progress', 'Awaiting Consumer', 'Resolved'];
-  priorities = ['All', 'Low', 'Medium', 'High'];
+  priorities = ['All', 'Low', 'Medium', 'High', 'Urgent'];
 
   currentPage: number = 1;
   pageSize: number = 10;
   totalPages: number = 1;
   totalPagesArray: number[] = [];
 
-  constructor(private complaintService: ComplaintService, private auth: AuthService) {}
+  constructor(private complaintService: ComplaintService) {}
 
   ngOnInit(): void {
     setTimeout(() => {
