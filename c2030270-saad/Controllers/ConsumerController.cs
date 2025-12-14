@@ -81,7 +81,7 @@ namespace c2030270_saad.Controllers
             }
         }
         
-        [HttpGet("search")]
+        [HttpGet("SearchConsumers")]
         public ActionResult<List<SearchConsumerResult>> SearchConsumers([FromQuery] string query, int tenantId)
         {
             if (string.IsNullOrWhiteSpace(query))

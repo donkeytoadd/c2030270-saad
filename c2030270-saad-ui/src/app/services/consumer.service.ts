@@ -22,7 +22,7 @@ export class ConsumerService {
     const tenantId = this.authService.getTenantId();
 
     return this.http.get<any[]>(
-      `${this.apiUrl}/search?tenantId=${tenantId}&query=${query}`
+      `${this.apiUrl}/SearchConsumers?tenantId=${tenantId}&query=${query}`
     );
   }
 }
