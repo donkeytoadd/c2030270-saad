@@ -12,7 +12,8 @@ namespace c2030270_saad.Controllers
         private readonly HealthCheckService _healthCheckService;
 
         public HealthCheckController(
-            ILogger<HealthCheckController> logger, HealthCheckService healthCheckService)
+            ILogger<HealthCheckController> logger,
+            HealthCheckService healthCheckService)
         {
             this.logger = logger;
             _healthCheckService = healthCheckService;
@@ -27,7 +28,5 @@ namespace c2030270_saad.Controllers
 
             return report.Status == HealthStatus.Healthy ? Ok(report) : StatusCode((int)HttpStatusCode.ServiceUnavailable, report);
         }
-
-        
     }
 }
