@@ -4,6 +4,6 @@ namespace c2030270_saad.Data.Queries.Complaint.Interfaces
 
     public interface IUpdateComplaintStatusQuery
     {
-        Complaint Execute(Complaint complaint, string newStatus);
+        Complaint Execute(Complaint complaint, string newStatus, string? notes);
     }
 }

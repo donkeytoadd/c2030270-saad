@@ -151,7 +151,7 @@ namespace c2030270_saad.Controllers
                 if (!GetTenantId(out var tenantId) || !GetUserId(out var userId))
                     return Unauthorized("User or tenant identification missing.");
                 
-                var updatedComplaint = this.complaintStatusUpdater.UpdateComplaintStatus(request.ComplaintId, tenantId, request.NewStatus, userId);
+                var updatedComplaint = this.complaintStatusUpdater.UpdateComplaintStatus(request, tenantId, userId);
 
                 return Ok(updatedComplaint);
             }

@@ -3,6 +3,7 @@ namespace c2030270_saad.Business.Updaters.Complaint
     using Data.Entities;
     using Data.Queries.Complaint.Interfaces;
     using Interfaces;
+    using Resources.Complaint.Request;
 
     public class ComplaintStatusUpdater : IComplaintStatusUpdater
     {
@@ -20,9 +21,9 @@ namespace c2030270_saad.Business.Updaters.Complaint
             this.createComplaintStatusHistoryQuery = createComplaintStatusHistoryQuery;
         }
 
-        public Complaint UpdateComplaintStatus(int complaintId, int tenantId,  string newStatus, int changedById)
+        public Complaint UpdateComplaintStatus(UpdateComplaintStatusRequest request, int tenantId, int changedById)
         {
-            var complaint = this.getComplaintByIdQuery.Execute(complaintId,tenantId);
+            var complaint = this.getComplaintByIdQuery.Execute(request.ComplaintId,tenantId);
 
             if (complaint == null)
                 throw new Exception("Complaint not found.");
@@ -31,13 +32,13 @@ namespace c2030270_saad.Business.Updaters.Complaint
             {
                 ComplaintId = complaint.ComplaintId,
                 OldStatus = complaint.Status,
-                NewStatus = newStatus,
+                NewStatus = request.NewStatus,
                 ChangedAt = DateTime.Now,
                 ChangedById = changedById
                 
             };
 
-            var updatedComplaint = this.updateComplaintStatusQuery.Execute(complaint, newStatus);
+            var updatedComplaint = this.updateComplaintStatusQuery.Execute(complaint, request.NewStatus, request.Notes);
             this.createComplaintStatusHistoryQuery.Execute(complaintStatusHistory);
 
             return updatedComplaint;

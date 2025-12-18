@@ -18,12 +18,23 @@ namespace c2030270_saad.Data.Queries.Complaint
             this.logger = logger;
         }
 
-        public Complaint Execute(Complaint complaint, string newStatus)
+        public Complaint Execute(Complaint complaint, string newStatus, string? notes)
         {
             using (var context = this.contextFactory.CreateDbContext())
             {
-                complaint.Status = newStatus;
-                context.SaveChanges();
+                var complaintToUpdate = context.Complaint.FirstOrDefault(x => x.ComplaintId ==  complaint.ComplaintId);
+
+                if (complaintToUpdate != null)
+                {
+                    complaintToUpdate.Status = newStatus;
+                    if (notes != null)
+                    {
+                        complaintToUpdate.ResolutionNotes = notes;
+                    }
+
+                    context.SaveChanges();
+                    return complaintToUpdate;
+                }
                 return complaint;
             }
         }

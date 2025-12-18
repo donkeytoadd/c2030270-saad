@@ -85,6 +85,16 @@ export class ConsumerViewComplaintComponent implements OnInit {
   }
 
   updateComplaintStatus(newStatus: string) {
-    this.complaintService.UpdateComplaintStatus(this.complaint.complaintId, newStatus);
+    this.complaintService.UpdateComplaintStatus(this.complaint.complaintId, newStatus)
+      .subscribe({
+        next: () => {
+          alert('Complaint cancelled successfully');
+          this.loadComplaint();
+        },
+        error: err => {
+          console.error('Cancel failed', err);
+          alert('Failed to cancel complaint');
+        }
+      });
   }
 }

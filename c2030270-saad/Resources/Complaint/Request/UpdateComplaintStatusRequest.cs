@@ -4,5 +4,6 @@ namespace c2030270_saad.Resources.Complaint.Request
     {
         public int ComplaintId { get; set; }
         public string NewStatus { get; set; }
+        public string? Notes { get; set; }
     }
 }

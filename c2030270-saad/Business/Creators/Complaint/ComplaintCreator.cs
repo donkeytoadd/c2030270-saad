@@ -52,8 +52,13 @@ namespace c2030270_saad.Business.Creators.Complaint
 
                 var complaint = this.createComplaintQuery.Execute(mappedComplaint);
 
-                this.complaintStatusUpdater.UpdateComplaintStatus(complaint.ComplaintId, complaint.TenantId,
-                    complaint.Status, changedById);
+                var updateRequest = new UpdateComplaintStatusRequest()
+                {
+                    ComplaintId = complaint.ComplaintId,
+                    NewStatus = complaint.Status,
+                };
+
+                this.complaintStatusUpdater.UpdateComplaintStatus(updateRequest, complaint.TenantId, changedById);
 
                 return complaint;
             }
