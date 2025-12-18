@@ -88,28 +88,21 @@ export class SupportPersonViewComplaintComponent implements OnInit {
 
     const tenantId = this.auth.getTenantId();
 
-    let completed = 0;
-
-    this.selectedFiles.forEach(file => {
-      this.complaintService
-        .UploadAttachment(this.complaintId, tenantId, file)
-        .subscribe({
-          next: () => {
-            completed++;
-
-            if (completed === this.selectedFiles.length) {
-              alert('All files uploaded successfully');
-              this.selectedFiles = [];
-              this.loadComplaint();
-            }
-          },
-          error: err => {
-            console.error('Upload failed for file:', file.name, err);
-            alert(`Failed to upload ${file.name}`);
-          }
-        });
-    });
+    this.complaintService
+      .UploadAttachment(this.complaintId, tenantId, this.selectedFiles)
+      .subscribe({
+        next: () => {
+          alert('Files uploaded successfully');
+          this.selectedFiles = [];
+          this.loadComplaint();
+        },
+        error: err => {
+          console.error('Upload failed', err);
+          alert('Failed to upload files');
+        }
+      });
   }
+
 
 
   saveStatusUpdate() {

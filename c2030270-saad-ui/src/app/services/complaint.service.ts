@@ -30,12 +30,15 @@ export class ComplaintService {
     return this.http.get<ComplaintAttachment[]>(`${this.apiUrl}/GetAttachments?complaintId=${complaintId}`);
   }
 
-  UploadAttachment(complaintId: number, tenantId: number, file: File[]) {
+  UploadAttachment(complaintId: number, tenantId: number, files: File[]) {
     const formData = new FormData();
 
     formData.append('ComplaintId', complaintId.toString());
     formData.append('TenantId', tenantId.toString());
-    formData.append('File', file);
+
+    files.forEach(file => {
+      formData.append('Files', file);
+    });
 
     return this.http.post(`${this.apiUrl}/UploadAttachment`, formData);
   }
