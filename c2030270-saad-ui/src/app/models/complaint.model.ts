@@ -7,4 +7,5 @@ export interface Complaint {
   createdAt: string;
   updatedAt?: string;
   assignedToId?: number;
+  resolutionNotes?: string;
 }

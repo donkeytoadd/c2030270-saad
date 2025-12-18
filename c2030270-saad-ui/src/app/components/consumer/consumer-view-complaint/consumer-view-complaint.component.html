@@ -57,6 +57,14 @@
 
               <h3 class="section-title">Description</h3>
               <p class="description">{{ complaint?.description }}</p>
+
+              @if (complaint?.status === 'Resolved - Pending Acknowledgement' || complaint?.status === 'Closed') {
+                <h3 class="section-title">Resolution Notes</h3>
+
+                <div class="resolution-box">
+                  {{ complaint?.resolutionNotes || 'No resolution notes provided.' }}
+                </div>
+              }
             }
 
             @else if (selectedTab === 'Attachments') {

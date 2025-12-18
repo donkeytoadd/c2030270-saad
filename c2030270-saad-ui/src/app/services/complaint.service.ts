@@ -30,20 +30,22 @@ export class ComplaintService {
     return this.http.get<ComplaintAttachment[]>(`${this.apiUrl}/GetAttachments?complaintId=${complaintId}`);
   }
 
-  UploadAttachment(complaintId: number, files: File[]) {
+  UploadAttachment(complaintId: number, tenantId: number, file: File[]) {
     const formData = new FormData();
-    formData.append('complaintId', complaintId.toString());
 
-    files.forEach(f => formData.append('files', f));
+    formData.append('ComplaintId', complaintId.toString());
+    formData.append('TenantId', tenantId.toString());
+    formData.append('File', file);
 
     return this.http.post(`${this.apiUrl}/UploadAttachment`, formData);
   }
+
 
   GetComplaintsByAssignedToId(): Observable<Complaint[]> {
     return this.http.get<Complaint[]>(`${this.apiUrl}/GetComplaintsByAssignedToId`);
   }
 
-  UpdateComplaintStatus(complaintId: number, newStatus: string) {
-    return this.http.post(`${this.apiUrl}/UpdateComplaintStatus`, { complaintId, newStatus });
+  UpdateComplaintStatus(complaintId: number, newStatus: string, notes?: string) {
+    return this.http.post(`${this.apiUrl}/UpdateComplaintStatus`, { complaintId, newStatus, notes});
   }
 }

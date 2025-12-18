@@ -25,7 +25,7 @@ export class ConsumerViewComplaintComponent implements OnInit {
   assignedStaff?: Staff | null = null;
   attachments: any[] = []
 
-  tabs = ["Details", "Communication History", "Attachments", "Resolution"];
+  tabs = ["Details", "Attachments"];
   selectedTab = "Details";
 
   loading: boolean = true;

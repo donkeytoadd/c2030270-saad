@@ -27,6 +27,8 @@ namespace c2030270_saad.Data.Queries.Complaint
                 if (complaintToUpdate != null)
                 {
                     complaintToUpdate.Status = newStatus;
+                    complaintToUpdate.UpdatedAt = DateTime.Now;
+                    
                     if (notes != null)
                     {
                         complaintToUpdate.ResolutionNotes = notes;

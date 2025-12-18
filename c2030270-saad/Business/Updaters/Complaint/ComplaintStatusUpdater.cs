@@ -35,7 +35,6 @@ namespace c2030270_saad.Business.Updaters.Complaint
                 NewStatus = request.NewStatus,
                 ChangedAt = DateTime.Now,
                 ChangedById = changedById
-                
             };
 
             var updatedComplaint = this.updateComplaintStatusQuery.Execute(complaint, request.NewStatus, request.Notes);

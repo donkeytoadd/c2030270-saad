@@ -166,12 +166,22 @@ namespace c2030270_saad.Controllers
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> UploadAttachment([FromForm] UploadAttachmentRequest uploadAttachmentRequest)
         {
-            if (uploadAttachmentRequest.File.Length == 0)
-                return BadRequest("File is required.");
+            if (uploadAttachmentRequest.Files.Count == 0)
+                return BadRequest("At least one file is required.");
 
-            var attachment = this.complaintCreator.SaveAttachment(uploadAttachmentRequest.ComplaintId, uploadAttachmentRequest.TenantId, uploadAttachmentRequest.File);
+            var savedAttachments = new List<ComplaintAttachment>();
 
-            return Ok(attachment);
+            foreach (var file in uploadAttachmentRequest.Files)
+            {
+                if (file.Length == 0)
+                    continue;
+
+                var attachment = this.complaintCreator.SaveAttachment(uploadAttachmentRequest.ComplaintId, uploadAttachmentRequest.TenantId, file);
+
+                savedAttachments.Add(attachment);
+            }
+
+            return Ok(savedAttachments);
         }
         
         [HttpGet("GetAttachments")]

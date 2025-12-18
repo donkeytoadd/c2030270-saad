@@ -1,42 +1,48 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ComplaintService } from '../../../../services/complaint.service';
-import { AuthService } from '../../../../services/auth.service';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, NgModel} from '@angular/forms';
 import { SupportPersonSidebarComponent } from '../support-person-sidebar/support-person-sidebar.component';
-import {DatePipe} from '@angular/common';
-import {Complaint} from '../../../../models/complaint.model';
-import {
-  SkeletonViewComplaintComponent
-} from '../../../skeleton-fields/skeleton-view-complaint/skeleton-view-complaint.component';
+import { DatePipe } from '@angular/common';
+import { Complaint } from '../../../../models/complaint.model';
+import { SkeletonViewComplaintComponent } from '../../../skeleton-fields/skeleton-view-complaint/skeleton-view-complaint.component';
+import {AuthService} from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-support-person-view-complaint',
   standalone: true,
   templateUrl: './support-person-view-complaint.component.html',
-  imports: [FormsModule, SupportPersonSidebarComponent, DatePipe, SkeletonViewComplaintComponent],
+  imports: [
+    FormsModule,
+    SupportPersonSidebarComponent,
+    DatePipe,
+    SkeletonViewComplaintComponent
+  ],
   styleUrls: ['./support-person-view-complaint.component.scss']
 })
 export class SupportPersonViewComplaintComponent implements OnInit {
-  complaintId!: number;
-  complaint: Complaint;
-  attachments: any[] = []
 
-  tabs: string[] = ['Details', 'Communication History', 'Attachments', 'Update Status'];
+  complaintId!: number;
+  complaint!: Complaint;
+  attachments: any[] = [];
+
+  tabs: string[] = ['Details', 'Attachments', 'Update Status'];
   selectedTab: string = 'Details';
 
   selectedFiles: File[] = [];
+  loading = true;
 
-  loading: boolean = true;
+  updateModel = {
+    status: '',
+    notes: ''
+  };
 
   constructor(private route: ActivatedRoute, private router: Router, private complaintService: ComplaintService, private auth: AuthService) {}
 
   ngOnInit(): void {
-    this.complaintId = Number(this.route.snapshot.paramMap.get("complaintId"));
+    this.complaintId = Number(this.route.snapshot.paramMap.get('complaintId'));
 
-    setTimeout(() => {
-      this.loadComplaint();
-    }, 600);
+    setTimeout(() => this.loadComplaint(), 600);
   }
 
   goBack() {
@@ -48,43 +54,88 @@ export class SupportPersonViewComplaintComponent implements OnInit {
   }
 
   loadComplaint() {
+    this.loading = true;
+
     this.complaintService.GetComplaint(this.complaintId).subscribe({
       next: (data) => {
         this.complaint = data;
+
+        this.updateModel.status = data.status;
+        this.updateModel.notes = data.resolutionNotes ?? '';
+
         this.loading = false;
       },
-      error: (error) => {
-        console.error("Error loading complaint", error);
-        alert("Failed to load complaint.");
+      error: () => {
+        alert('Failed to load complaint');
         this.loading = false;
       }
+    });
+
+    this.complaintService.GetAttachments(this.complaintId).subscribe(files => {
+      this.attachments = files;
     });
   }
 
   selectFiles(event: any) {
-    const files = event.target.files;
-
-    for (let i = 0; i < files.length; i++) {
-      this.selectedFiles.push(files[i]);
-    }
+    this.selectedFiles = Array.from(event.target.files);
   }
 
   uploadAttachments() {
     if (this.selectedFiles.length === 0) {
-      alert("Please select at least one file.");
+      alert('Please select files first');
       return;
     }
 
-    this.complaintService.UploadAttachment(this.complaintId, this.selectedFiles).subscribe({
-      next: () => {
-        alert("Files uploaded successfully.");
-        this.selectedFiles = [];
-        this.loadComplaint();
-      },
-      error: (err) => {
-        console.error("Upload error", err);
-        alert("Failed to upload files.");
-      }
+    const tenantId = this.auth.getTenantId();
+
+    let completed = 0;
+
+    this.selectedFiles.forEach(file => {
+      this.complaintService
+        .UploadAttachment(this.complaintId, tenantId, file)
+        .subscribe({
+          next: () => {
+            completed++;
+
+            if (completed === this.selectedFiles.length) {
+              alert('All files uploaded successfully');
+              this.selectedFiles = [];
+              this.loadComplaint();
+            }
+          },
+          error: err => {
+            console.error('Upload failed for file:', file.name, err);
+            alert(`Failed to upload ${file.name}`);
+          }
+        });
     });
   }
+
+
+  saveStatusUpdate() {
+    if (!this.updateModel.status || !this.updateModel.notes.trim()) {
+      alert('Status and resolution notes are required');
+      return;
+    }
+
+    this.complaintService
+      .UpdateComplaintStatus(
+        this.complaint.complaintId,
+        this.updateModel.status,
+        this.updateModel.notes
+      )
+      .subscribe({
+        next: () => {
+          alert('Complaint updated successfully');
+          this.loadComplaint();
+          this.selectedTab = 'Details';
+        },
+        error: (err) => {
+          console.error('Update failed', err);
+          alert('Failed to update complaint');
+        }
+      });
+  }
+
+  protected readonly NgModel = NgModel;
 }

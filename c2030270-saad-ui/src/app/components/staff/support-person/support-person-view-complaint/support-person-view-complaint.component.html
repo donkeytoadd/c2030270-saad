@@ -4,9 +4,8 @@
   <main class="content">
     @if (loading) {
       <app-skeleton-view-complaint></app-skeleton-view-complaint>
-    }
-    @else {
-    <div>
+    } @else {
+
       <header class="topbar">
         <div></div>
         <div class="topbar-icons">
@@ -17,10 +16,10 @@
 
       <section class="header-row">
         <div>
-          <h1 class="title">{{ complaint?.title }}</h1>
+          <h1 class="title">{{ complaint.title }}</h1>
           <p class="meta">
             Complaint ID:
-            <strong>#C-{{ complaint?.createdAt | date:'yyyy' }}-{{ complaint?.complaintId }}</strong>
+            <strong>#C-{{ complaint.createdAt | date:'yyyy' }}-{{ complaint.complaintId }}</strong>
           </p>
         </div>
       </section>
@@ -34,25 +33,34 @@
 
           <nav class="tabs">
             @for (t of tabs; track t) {
-              <button [class.active]="selectedTab === t" (click)="selectTab(t)">
+              <button
+                [class.active]="selectedTab === t"
+                (click)="selectTab(t)">
                 {{ t }}
               </button>
             }
           </nav>
 
           <div class="panel-body">
+
             @if (selectedTab === 'Details') {
               <h3 class="section-title">Complaint Summary</h3>
 
               <div class="info-grid">
-                <p><strong>Status:</strong> {{ complaint?.status }}</p>
-                <p><strong>Priority:</strong> {{ complaint?.priority }}</p>
-                <p><strong>Submitted:</strong> {{ complaint?.createdAt | date:'MMM d, yyyy' }}</p>
-                <p><strong>Last Updated:</strong> {{ complaint?.updatedAt | date:'MMM d, yyyy' }}</p>
+                <p><strong>Status:</strong> {{ complaint.status }}</p>
+                <p><strong>Priority:</strong> {{ complaint.priority }}</p>
+                <p><strong>Submitted:</strong> {{ complaint.createdAt | date:'MMM d, yyyy' }}</p>
+                <p><strong>Last Updated:</strong> {{ complaint.updatedAt | date:'MMM d, yyyy' }}</p>
               </div>
 
               <h3 class="section-title">Description</h3>
-              <p class="description">{{ complaint?.description }}</p>
+              <p class="description">{{ complaint.description }}</p>
+
+              @if (complaint?.resolutionNotes) {
+                <br>
+                <h3 class="section-title">Resolution Notes</h3>
+                <div class="resolution-box">{{ complaint?.resolutionNotes }}</div>
+              }
             }
 
             @else if (selectedTab === 'Attachments') {
@@ -61,16 +69,15 @@
 
                 @if (attachments.length > 0) {
                   <ul>
-                    @for (a of attachments; track a.id) {
+                    @for (a of attachments; track a.attachmentId) {
                       <li>
                         <a [href]="'http://localhost:5122/' + a.filePath" target="_blank">
-                          {{ a.fileName }}
+                          {{ a.originalName }}
                         </a>
                       </li>
                     }
                   </ul>
-                }
-                @else {
+                } @else {
                   <p>No attachments uploaded.</p>
                 }
               </section>
@@ -86,30 +93,33 @@
             @else if (selectedTab === 'Update Status') {
               <section>
                 <h3 class="section-title">Update Complaint Status</h3>
-
+                <br>
                 <label>Status</label>
-                <select>
+                <select [(ngModel)]="updateModel.status">
                   <option value="In Progress">In Progress</option>
-                  <option value="Awaiting Consumer">Awaiting Consumer</option>
-                  <option value="Resolved">Resolved</option>
+                  <option value="Resolved - Pending Acknowledgement">Resolved - Pending Acknowledgement</option>
                 </select>
 
-                <label>Resolution Notes</label>
-                <textarea></textarea>
+                @if (updateModel.status == "Resolved - Pending Acknowledgement") {
+                  <label>Resolution Notes</label>
+                  <textarea
+                    rows="4"
+                    [(ngModel)]="updateModel.notes"
+                    placeholder="Describe the resolution steps taken...">
+                </textarea>
+                }
 
                 <div class="actions">
-                  <button class="btn submit">Save Changes</button>
+                  <button class="btn submit" (click)="saveStatusUpdate()">
+                    Save Changes
+                  </button>
                 </div>
               </section>
-            }
-
-            @else {
-              <p class="placeholder">Content for "{{ selectedTab }}" will appear here.</p>
             }
 
           </div>
         </section>
       </div>
-    </div>}
+    }
   </main>
 </div>
